@@ -1,8 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
-  # Enable nix daemon
-  services.nix-daemon.enable = true;
+  # Nix daemon is managed automatically when nix.enable is on
   
   # Nix configuration
   nix = {
@@ -61,13 +60,7 @@
       _FXShowPosixPathInTitle = true;     # Show full path in title
     };
 
-    # Menu bar clock
-    menuExtrasClock = {
-      ShowSeconds = true;
-      ShowDayOfWeek = true;
-    };
-
-    # Screenshots
+    # Screenshots (using correct option name)
     screencapture = {
       location = "~/Pictures/Screenshots";
       type = "png";
@@ -104,6 +97,5 @@
     brews = [ ];
   };
 
-  # Auto-upgrade nix package and daemon
-  services.nix-daemon.enable = true;
+  # Note: services.nix-daemon.enable is already set above
 }

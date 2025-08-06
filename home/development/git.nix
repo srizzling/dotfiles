@@ -17,7 +17,7 @@
       
       core = {
         editor = "code --wait";
-        pager = "delta";
+        # pager is set automatically by delta.enable
         autocrlf = false;
       };
       
@@ -43,16 +43,7 @@
         colorMoved = "default";
       };
       
-      # Delta configuration
-      delta = {
-        navigate = true;
-        light = false;
-        side-by-side = true;
-      };
-      
-      interactive = {
-        diffFilter = "delta --color-only";
-      };
+      # Delta configuration is handled by programs.git.delta.options
     };
     
     # Git aliases
@@ -75,5 +66,12 @@
   };
   
   # Delta (better git diff)
-  programs.git.delta.enable = true;
+  programs.git.delta = {
+    enable = true;
+    options = {
+      navigate = true;
+      light = false;
+      side-by-side = true;
+    };
+  };
 }

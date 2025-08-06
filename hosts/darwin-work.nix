@@ -9,6 +9,7 @@
 
   # System configuration
   system.stateVersion = 4;
+  system.primaryUser = "srizzling";
   
   # Host-specific settings
   networking.hostName = "work-mac";
