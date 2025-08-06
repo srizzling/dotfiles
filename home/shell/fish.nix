@@ -34,15 +34,6 @@
         };
       }
       {
-        name = "fish-git-emojis";
-        src = pkgs.fetchFromGitHub {
-          owner = "srizzling";
-          repo = "fish-git-emojis";
-          rev = "HEAD";  # Use latest commit
-          sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";  # Will need to be updated
-        };
-      }
-      {
         name = "catppuccin-fish";
         src = pkgs.fetchFromGitHub {
           owner = "catppuccin";
