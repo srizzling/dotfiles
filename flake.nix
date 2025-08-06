@@ -20,7 +20,7 @@
     darwinConfigurations = {
       # Personal machine configuration
       "personal" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";  # Apple Silicon
+        system = "x86_64-darwin";  # Intel Mac
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/darwin-personal.nix
@@ -73,7 +73,7 @@
 
     # Phase completion tests
     checks = let
-      systems = [ "aarch64-darwin" ];
+      systems = [ "x86_64-darwin" "aarch64-darwin" ];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f {
         pkgs = import nixpkgs { inherit system; };
       });
