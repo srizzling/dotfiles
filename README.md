@@ -2,6 +2,22 @@
 
 Modern, declarative macOS configuration using Nix Darwin + Home Manager with Fish shell, comprehensive package management, and beautiful Catppuccin theming.
 
+## 🔄 Migrating from Pre-Nix Dotfiles
+
+If you're migrating from the old Homebrew/symlink-based dotfiles:
+
+1. **Run the migration analysis**:
+   ```bash
+   ./analyze-migration.fish
+   ```
+
+2. **Backup and migrate**:
+   ```bash
+   ./migrate-to-nix.sh
+   ```
+
+3. **Follow the migration guide**: See [MIGRATION.md](MIGRATION.md) for detailed instructions
+
 ## Quick Start
 
 ### Bootstrap
