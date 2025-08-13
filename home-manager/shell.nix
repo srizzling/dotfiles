@@ -221,8 +221,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "srizzling";
           repo = "fish-git-emojis";
-          rev = "e39756d6c3822f7f9afaa704a563e678daea53ec";
-          sha256 = "sha256-p+qpLJqsOmKC0/ShU+ik1/wHnZm9vkUEjwKSkSywVEA=";
+          rev = "bf62bd6e6f77b64f743c94d672ad6f0d8fd6415f";
+          sha256 = "sha256-vtgXLb9sCu1FrmLw4mWzHeieBvYw4Xmr3pi0vD8+gdo=";
         };
       }
       # fzf.fish - Better fzf integration
