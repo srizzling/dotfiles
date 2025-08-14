@@ -33,6 +33,7 @@
     devbox  # Isolated development environments
     claude-code  # Agentic coding tool by Anthropic
     cocogitto  # Conventional commits toolbox
+    mame-tools  # MAME tools including chdman
     
     # Fish shell tools
     fishPlugins.fishtape  # TAP-compliant test runner for Fish
