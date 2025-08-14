@@ -231,8 +231,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "srizzling";
           repo = "fzf.fish";
-          rev = "66f72e05d5e74636ae318084a227eaf5ebd8bef0";
-          sha256 = "sha256-d7pklSBta0qxn4xryN2ukcCs303cAo8e23FQIdxf6ks=";
+          rev = "53d959d1ff4c843687edd7506b6859b765aacd01";
+          sha256 = "sha256-X7N6hHho0Jfvwu3ydB6XrJ2c5ykscvxtCozkfRU/n2Y=";
         };
       }
     ];
