@@ -225,14 +225,14 @@
           sha256 = "sha256-vtgXLb9sCu1FrmLw4mWzHeieBvYw4Xmr3pi0vD8+gdo=";
         };
       }
-      # fzf.fish - Better fzf integration
+      # fzf.fish - Better fzf integration (forked version with additional features)
       {
         name = "fzf.fish";
         src = pkgs.fetchFromGitHub {
-          owner = "patrickf1";
+          owner = "srizzling";
           repo = "fzf.fish";
-          rev = "8920367cf85eee5218cc25a11e209d46e2591e7a";
-          sha256 = "sha256-T8KYLA/r/gOKvAivKRoeqIwE2pINlxFQtZJHpOy9GMM=";
+          rev = "66f72e05d5e74636ae318084a227eaf5ebd8bef0";
+          sha256 = "sha256-d7pklSBta0qxn4xryN2ukcCs303cAo8e23FQIdxf6ks=";
         };
       }
     ];
