@@ -25,6 +25,22 @@
         navigate = true;
         light = false;
         line-numbers = true;
+        side-by-side = true;
+        syntax-theme = "Dracula";
+        # Rose Pine inspired colors for delta elements
+        line-numbers-left-style = "#6e6a86";
+        line-numbers-right-style = "#6e6a86";
+        line-numbers-minus-style = "#eb6f92";
+        line-numbers-plus-style = "#31748f";
+        line-numbers-zero-style = "#6e6a86";
+        minus-style = "syntax #403d52";
+        minus-emph-style = "syntax #524f67";
+        plus-style = "syntax #26233a";
+        plus-emph-style = "syntax #403d52";
+        hunk-header-style = "file line-number syntax";
+        hunk-header-decoration-style = "#908caa box";
+        file-style = "#c4a7e7";
+        file-decoration-style = "#c4a7e7 ul";
       };
       
       merge.conflictstyle = "diff3";

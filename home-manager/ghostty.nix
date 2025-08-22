@@ -10,8 +10,8 @@
     font-family-bold-italic = Iosevka NFM
     font-size = 23
     
-    # Use Catppuccin Macchiato theme
-    theme = catppuccin-macchiato
+    # Use Rose Pine theme
+    theme = rose-pine
     
     # Window padding for better visual appearance
     window-padding-x = 10
