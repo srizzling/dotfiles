@@ -1,4 +1,4 @@
-{ config, pkgs, profile, ... }:
+{ config, pkgs, profile, lib, ... }:
 
 {
   # Fish shell configuration
@@ -27,17 +27,17 @@
       set -p fish_function_path /etc/profiles/per-user/srizzling/share/fish/vendor_functions.d
       set -p fish_function_path ${pkgs.fzf}/share/fish/vendor_functions.d
       
-      # Set Catppuccin Macchiato theme (only if not already set)
+      # Set Rose Pine theme (only if not already set)
       if not test -f ~/.config/fish/themes/current_theme
-        fish_config theme save "Catppuccin Macchiato" >/dev/null 2>&1 || true
-        echo "Catppuccin Macchiato" > ~/.config/fish/themes/current_theme
+        fish_config theme save "Rosé Pine" >/dev/null 2>&1 || true
+        echo "Rosé Pine" > ~/.config/fish/themes/current_theme
       end
       
       # Configure fzf.fish to use delta for diff highlighting
       set -gx fzf_diff_highlighter delta --paging=never --width=20
       
-      # Configure fzf key bindings and options
-      set -gx FZF_DEFAULT_OPTS '--height 50% --layout=reverse --border --margin=1 --padding=1'
+      # Configure fzf key bindings and options with Rose Pine theme
+      set -gx FZF_DEFAULT_OPTS '--height 50% --layout=reverse --border --margin=1 --padding=1 --color=fg:#908caa,bg:#191724,hl:#ebbcba --color=fg+:#e0def4,bg+:#26233a,hl+:#ebbcba --color=border:#403d52,header:#31748f,gutter:#191724 --color=spinner:#f6c177,info:#9ccfd8 --color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa'
       
       # fzf.fish configuration variables
       set fzf_history_opts --preview-window=wrap --preview='echo {}'
@@ -205,14 +205,14 @@
 
     # Fish plugins via Home Manager (minimal essential plugins only)
     plugins = [
-      # Catppuccin theme for Fish
+      # Rose Pine theme for Fish
       {
-        name = "catppuccin-fish";
+        name = "rose-pine-fish";
         src = pkgs.fetchFromGitHub {
-          owner = "catppuccin";
+          owner = "rose-pine";
           repo = "fish";
-          rev = "0ce27b518e8ead555dec34dd8be3df5bd75cff8e";
-          sha256 = "sha256-Dc/zdxfzAUM5NX8PxzfljRbYvO9f9syuLO8yBr+R3qg=";
+          rev = "b82982c55582cfaf6f220de1893c7c73dd0cb301";
+          sha256 = "sha256-Dvaw1k7XOU2NUQbTJAXPgAOPN1zTLVrc7NZDY5/KHeM=";
         };
       }
       # fish-git-emojis - Git commit emojis
@@ -221,8 +221,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "srizzling";
           repo = "fish-git-emojis";
-          rev = "bf62bd6e6f77b64f743c94d672ad6f0d8fd6415f";
-          sha256 = "sha256-vtgXLb9sCu1FrmLw4mWzHeieBvYw4Xmr3pi0vD8+gdo=";
+          rev = "97b54cf57c543d46215b01ce283f04f49e6089c6";
+          sha256 = "sha256-hQN4GkL4RPrBQfIjiJNvEukw2taDEhFh3nnYRCK81zY=";
         };
       }
       # fzf.fish - Better fzf integration (forked version with additional features)
@@ -247,18 +247,17 @@
     enableFishIntegration = true;
   };
 
-  # Starship prompt - full configuration from dotfiles repo  
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
     settings = {
       character = {
-        error_symbol = "[λ](red)";
-        success_symbol = "[λ](purple)";
+        error_symbol = "[λ](love)";
+        success_symbol = "[λ](iris)";
       };
       aws = {
         format = " [$symbol($profile )(\\($region\\) )(\\[$duration\\])]($style)";
-        style = "242";
+        style = "pine";
         region_aliases = {
           "ap-southeast-2" = "ase2";
           "us-east-1" = "use1";
@@ -268,15 +267,16 @@
       azure = {
         disabled = false;
         format = "[$symbol($subscription)]($style) ";
-        style = "242";
+        style = "foam";
         symbol = "󰠅 ";
       };
       hostname = {
-        style = "242";
+        style = "overlay";
       };
       cmake.disabled = true;
       cmd_duration = {
         format = " [$duration]($style)";
+        style = "gold";
         min_time = 500;
       };
       conda.disabled = true;
@@ -284,7 +284,7 @@
       dart.disabled = true;
       directory = {
         read_only = " 🔒";
-        style = "blue";
+        style = "foam";
         truncate_to_repo = true;
         truncation_length = 0;
       };
@@ -296,17 +296,18 @@
       erlang.disabled = true;
       gcloud.disabled = true;
       git_branch = {
-        format = "[$symbol](red)[($branch)]($style)";
-        style = "242";
+        format = "[$symbol](love)[($branch)]($style)";
+        style = "rose";
         symbol = "";
       };
       git_status = {
-        ahead = "[⇡](cyan)";
-        behind = "[⇣](cyan)";
-        diverged = "[⇡⇣](cyan)";
+        ahead = "[⇡](foam)";
+        behind = "[⇣](foam)";
+        diverged = "[⇡⇣](foam)";
         format = "([$modified $ahead_behind]($style))";
-        modified = "[*](218)";
-        stashed = "[≡](cyan)";
+        modified = "[*](gold)";
+        stashed = "[≡](foam)";
+        style = "rose";
       };
       golang.disabled = true;
       helm.disabled = true;
@@ -335,6 +336,16 @@
       terraform.disabled = true;
       vagrant.disabled = true;
       zig.disabled = true;
+      palette = "rose-pine";
+      palettes.rose-pine = {
+        overlay = "#26233a";
+        love = "#eb6f92";
+        gold = "#f6c177";
+        rose = "#ebbcba";
+        pine = "#31748f";
+        foam = "#9ccfd8";
+        iris = "#c4a7e7";
+      };
     };
   };
 }
