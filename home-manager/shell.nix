@@ -1,6 +1,11 @@
 { config, pkgs, profile, lib, ... }:
 
 {
+  # Ensure Fish directories exist and set initial theme
+  home.file.".config/fish/themes/.keep".text = "";
+  home.file.".config/fish/themes/current_theme".text = "Rosé Pine";
+  home.file.".config/fish/completions/.keep".text = "";
+
   # Fish shell configuration
   programs.fish = {
     enable = true;
@@ -11,6 +16,7 @@
       fish_add_path --prepend /run/current-system/sw/bin
       fish_add_path --prepend /nix/var/nix/profiles/default/bin
       fish_add_path --prepend /etc/profiles/per-user/srizzling/bin
+      fish_add_path --prepend $HOME/.local/bin
     '';
     
     # Also set PATH for login shells
@@ -19,6 +25,7 @@
       fish_add_path --prepend /run/current-system/sw/bin
       fish_add_path --prepend /nix/var/nix/profiles/default/bin
       fish_add_path --prepend /etc/profiles/per-user/srizzling/bin
+      fish_add_path --prepend $HOME/.local/bin
     '';
     
     # Additional interactive shell configuration
@@ -136,9 +143,7 @@
       darwin-switch = "darwin-rebuild switch --flake ~/.dotfiles";
       darwin-rollback = "darwin-rebuild rollback";
       
-      # Container aliases for Docker compatibility
-      docker = "podman";
-      docker-compose = "podman-compose";
+      # OrbStack provides native docker commands, no aliases needed
     };
 
     # Fish functions with fzf integrations

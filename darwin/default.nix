@@ -16,7 +16,8 @@
   # Create /etc/zshrc that loads the nix-darwin environment
   programs.zsh.enable = true;
   
-  # Set Fish as the default shell for the user
+  # Add Fish to /etc/shells and set as default user shell
+  environment.shells = [ pkgs.fish ];
   users.users.srizzling.shell = pkgs.fish;
 
   # Configure Fish at system level
