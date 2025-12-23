@@ -31,14 +31,12 @@
 @test "just is available and working" (just --version | string match -q "just*")
 @test "devbox is available and working" (devbox version | string match -q "*.*")
 
-# Container Tools Tests
-@test "podman is available and working" (podman --version | string match -q "podman version*")
-@test "podman-compose is available and working" (podman-compose --version | string match -q "*.*")
+# Container Tools Tests (OrbStack provides native docker)
+@test "docker is available via OrbStack" (docker --version | string match -q "Docker version*")
 
 # Fish Configuration Tests
 @test "PATH includes Nix system binaries" (echo $PATH | string match -q "*/run/current-system/sw/bin*")
 @test "PATH includes per-user profile" (echo $PATH | string match -q "*/etc/profiles/per-user/*")
-@test "docker alias points to podman" (fish -c "which docker" | string match -q "*podman*")
 
 # Fish Testing Tools
 @test "fishtape is available and working" (fishtape --version | string match -q "fishtape version*")
