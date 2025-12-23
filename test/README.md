@@ -57,21 +57,14 @@ make test-packages
 - `just` - Command runner
 
 ### Container Tools
-- `podman` - Daemonless container engine (Docker alternative)
-- `podman-compose` - Multi-container applications
-- `docker` - Fallback Docker CLI (if available)
+- `docker` - Docker via OrbStack (native ARM64)
 
 ## 🏗️ Architecture Support
 
-### Intel/AMD64 (`x86_64-linux`)
-- Tests Podman container engine
+This configuration is Apple Silicon only (aarch64-darwin):
+- Tests OrbStack Docker integration
 - Validates all command-line tools
-- Simulates `personal-intel` and `work-intel` configurations
-
-### Apple Silicon/ARM64 (`aarch64-linux`)
-- Tests ARM64 package availability
-- Validates cross-platform compatibility
-- Simulates `personal-arm` and `work-arm` configurations
+- `personal` and `work` configuration profiles
 
 ## 🤖 GitHub Actions
 
@@ -82,7 +75,7 @@ The test suite automatically runs on:
 - **Weekly schedule** (Sundays at 2 AM UTC) to catch nixpkgs updates
 
 ### Test Matrix
-- Multi-architecture testing (Intel + ARM64)
+- Apple Silicon (ARM64) testing
 - Flake evaluation validation
 - Docker Compose configuration testing
 - Package availability verification
@@ -98,13 +91,13 @@ The test script provides colored output:
 Example output:
 ```
 🐳 Starting Nix Dotfiles Test Suite
-Architecture: amd64
-Build Platform: linux/amd64
+Architecture: arm64
+Build Platform: darwin/arm64
 ================================
 
-📊 Testing Intel/AMD64 configuration
-🔧 System: x86_64-linux
-🎯 Config: personal-intel
+📊 Testing Apple Silicon configuration
+🔧 System: aarch64-darwin
+🎯 Config: personal
 
 === Core Utilities Tests ===
 Testing bat... ✓ PASS
