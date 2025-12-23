@@ -20,27 +20,24 @@
 
   outputs = { self, nixpkgs, nix-darwin, home-manager, brew-nix, catppuccin, ... }:
   let
-    mkDarwinSystem = system: hostName: profile: username: nix-darwin.lib.darwinSystem {
+    system = "aarch64-darwin";
+
+    mkDarwinSystem = hostName: profile: username: nix-darwin.lib.darwinSystem {
       inherit system;
       specialArgs = { inherit profile system; };
       modules = [
         ./darwin
         # Add brew-nix module
         brew-nix.darwinModules.default
-        ({pkgs, lib, system, ...}: {
-          # Enable brew-nix  
+        ({pkgs, ...}: {
+          # Enable brew-nix
           brew-nix.enable = true;
-          
+
           # Add system-level packages (prefer nixpkgs, fallback to brew-nix)
           environment.systemPackages = with pkgs; [
             # Terminal emulator - using brew-nix due to build issues in nixpkgs
             brewCasks.ghostty
-          ] ++ lib.optionals (system == "x86_64-darwin") [
-            # Podman for Intel Macs (daemonless Docker alternative)
-            podman
-            podman-compose
-          ] ++ lib.optionals (system == "aarch64-darwin") [
-            # OrbStack for Apple Silicon Macs (only available via brew-nix)
+            # OrbStack for container management
             brewCasks.orbstack
           ];
         })
@@ -67,22 +64,13 @@
     };
   in
   {
-    # Multi-architecture and multi-profile support
+    # Apple Silicon configurations
     darwinConfigurations = {
-      # Intel Mac - Personal
-      "personal-intel" = mkDarwinSystem "x86_64-darwin" "personal-intel" "personal" "srizzling";
-      # Intel Mac - Work  
-      "work-intel" = mkDarwinSystem "x86_64-darwin" "work-intel" "work" "srizzling";
-      # Apple Silicon - Personal
-      "personal-arm" = mkDarwinSystem "aarch64-darwin" "personal-arm" "personal" "srizzling";
-      # Apple Silicon - Work
-      "work-arm" = mkDarwinSystem "aarch64-darwin" "work-arm" "work" "srizzling";
+      "personal" = mkDarwinSystem "personal" "personal" "srizzling";
+      "work" = mkDarwinSystem "work" "work" "srizzling";
     };
 
-    # Development shells for easy access
-    devShells.x86_64-darwin.default = nixpkgs.legacyPackages.x86_64-darwin.mkShell {
-      buildInputs = with nixpkgs.legacyPackages.x86_64-darwin; [ gnumake ];
-    };
+    # Development shell
     devShells.aarch64-darwin.default = nixpkgs.legacyPackages.aarch64-darwin.mkShell {
       buildInputs = with nixpkgs.legacyPackages.aarch64-darwin; [ gnumake ];
     };
