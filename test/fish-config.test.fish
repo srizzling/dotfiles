@@ -6,8 +6,7 @@
 @test "la alias works" (alias la | string match -q "*lsd -a*") 
 @test "gs alias works" (alias gs | string match -q "*git status*")
 @test "gd alias works" (alias gd | string match -q "*git diff*")
-@test "docker alias works" (alias docker | string match -q "*podman*")
-@test "docker-compose alias works" (alias docker-compose | string match -q "*podman-compose*")
+# OrbStack provides native docker - no alias needed
 
 # Test Fish functions - cleaned up per user request  
 @test "fish_greeting function removed" (not functions -q fish_greeting)
