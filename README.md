@@ -46,7 +46,7 @@ make release     # Create new release
 ### Development
 - **Languages**: Python, Node.js, Go, Rust toolchains via devbox
 - **CLI Tools**: git, gh, ripgrep, fd, fzf, jq, curl, wget, just
-- **Development**: docker (podman), devbox, claude-code
+- **Development**: docker (via OrbStack), devbox, claude-code
 
 ### Terminal
 - **Shell**: Fish with plugins, autosuggestions, git-emoji functions  
@@ -63,14 +63,14 @@ make release     # Create new release
 - **Package Manager**: Nix (50+ tools) + brew-nix (GUI apps)
 - **Configuration**: Declarative Nix files + Home Manager
 - **Testing**: Comprehensive Fishtape test suite (51 tests)
-- **Architecture**: Multi-profile support (Intel/Apple Silicon, work/personal)
+- **Architecture**: Apple Silicon only (personal/work profiles)
 
 ## Architecture
 
 - **Nix Darwin**: System-level macOS configuration
 - **Home Manager**: User-level package and dotfile management  
 - **Flakes**: Pin dependencies for reproducible builds
-- **Multi-profile**: `personal-{intel,arm}`, `work-{intel,arm}` configurations
+- **Multi-profile**: `personal` and `work` configurations (Apple Silicon only)
 - **Testing**: All packages tested with Fish-based test runners
 
 ## Development
