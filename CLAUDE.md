@@ -175,20 +175,13 @@ Fish plugins are managed declaratively in `home-manager/shell.nix`. When adding 
 - **Atomic Updates** - Changes are applied all-or-nothing
 - **Multi-Profile Support** - Different configurations for work/personal
 
-### Multi-Architecture Support
+### Apple Silicon Only
 
-Configurations support both Intel and Apple Silicon Macs with architecture-specific packages:
+This configuration is optimized for Apple Silicon Macs (aarch64-darwin) only:
 
-```nix
-] ++ lib.optionals (system == "x86_64-darwin") [
-  # Intel Mac specific packages
-  podman
-  podman-compose
-] ++ lib.optionals (system == "aarch64-darwin") [
-  # Apple Silicon specific packages  
-  brewCasks.orbstack
-];
-```
+- Container management via OrbStack (native ARM64)
+- All packages built natively without Rosetta
+- Two profiles: `personal` and `work`
 
 ## Troubleshooting
 
