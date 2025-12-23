@@ -5,22 +5,20 @@
     ./system.nix
   ];
 
-  # Enable experimental features
-  nix.settings.experimental-features = "nix-command flakes";
-  
+  # Disable nix-darwin's Nix management - Determinate Nix manages the daemon
+  nix.enable = false;
+
   # Allow unfree, broken, and unsupported packages (needed for vscode, slack, raycast, spotify, ghostty, etc.)
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowBroken = true;
   nixpkgs.config.allowUnsupportedSystem = true;
-  
-  # Nix daemon is now managed unconditionally when nix.enable is on
-
-  # Necessary for using flakes on this system
-  nix.package = pkgs.nix;
 
   # Create /etc/zshrc that loads the nix-darwin environment
   programs.zsh.enable = true;
   
+  # Set Fish as the default shell for the user
+  users.users.srizzling.shell = pkgs.fish;
+
   # Configure Fish at system level
   programs.fish = {
     enable = true;
