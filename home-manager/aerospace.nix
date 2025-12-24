@@ -143,6 +143,10 @@
     run = 'move-node-to-workspace B'
 
     [[on-window-detected]]
+    if.app-id = 'com.apple.Safari'
+    run = 'move-node-to-workspace B'
+
+    [[on-window-detected]]
     if.app-id = 'com.spotify.client'
     run = 'move-node-to-workspace M'
 
