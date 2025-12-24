@@ -29,10 +29,10 @@
     [gaps]
     inner.horizontal = 10
     inner.vertical = 10
-    outer.left = 10
-    outer.bottom = 10
-    outer.top = 10 
-    outer.right = 10
+    outer.left = 40
+    outer.bottom = 40
+    outer.top = 40
+    outer.right = 40
 
     # 'main' binding mode is always active
     [mode.main.binding]
@@ -93,15 +93,15 @@
     # Navigate between monitors with arrow keys
     alt-left = 'focus-monitor left'
     alt-right = 'focus-monitor right'
-    
-    # Move current window between monitors with shift + arrow keys  
+
+    # Move current window between monitors with shift + arrow keys
     alt-shift-left = 'move-node-to-monitor left'
     alt-shift-right = 'move-node-to-monitor right'
-    
+
     # Navigate between workspaces with up/down arrows
     alt-up = 'workspace --wrap-around prev'
     alt-down = 'workspace --wrap-around next'
-    
+
     # Move windows between workspaces with shift + up/down arrows
     alt-shift-up = 'move-node-to-workspace --wrap-around prev'
     alt-shift-down = 'move-node-to-workspace --wrap-around next'
