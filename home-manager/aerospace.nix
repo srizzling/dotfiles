@@ -76,6 +76,7 @@
     alt-e = 'workspace E'  # Email
     alt-m = 'workspace M'  # Music
     alt-n = 'workspace N'  # Notes
+    alt-g = 'workspace G'  # Gaming
     alt-s = 'workspace S'  # Social
     alt-t = 'workspace T'  # Terminal
 
@@ -87,6 +88,7 @@
     alt-shift-e = 'move-node-to-workspace E'
     alt-shift-m = 'move-node-to-workspace M'
     alt-shift-n = 'move-node-to-workspace N'
+    alt-shift-g = 'move-node-to-workspace G'
     alt-shift-s = 'move-node-to-workspace S'
     alt-shift-t = 'move-node-to-workspace T'
 
@@ -139,6 +141,14 @@
     run = 'move-node-to-workspace B'
 
     [[on-window-detected]]
+    if.app-id = 'org.nixos.firefox'
+    run = 'move-node-to-workspace B'
+
+    [[on-window-detected]]
+    if.app-id = 'org.mozilla.nightly'
+    run = 'move-node-to-workspace B'
+
+    [[on-window-detected]]
     if.app-id = 'org.mozilla.firefox'
     run = 'move-node-to-workspace B'
 
@@ -159,7 +169,7 @@
     run = 'move-node-to-workspace S'
 
     [[on-window-detected]]
-    if.app-id = 'discord.Discord'
+    if.app-id = 'com.hnc.Discord'
     run = 'move-node-to-workspace S'
 
     [[on-window-detected]]
@@ -167,8 +177,16 @@
     run = 'move-node-to-workspace T'
 
     [[on-window-detected]]
-    if.app-id = 'com.mitchell.ghostty'
+    if.app-id = 'com.mitchellh.ghostty'
     run = 'move-node-to-workspace T'
+
+    [[on-window-detected]]
+    if.app-id = 'com.nvidia.gfnpc.mall'
+    run = ['layout floating', 'move-node-to-workspace G']
+
+    [[on-window-detected]]
+    if.app-id = 'com.riotgames.RiotGames.RiotClient'
+    run = ['layout floating', 'move-node-to-workspace G']
   '';
 
   # Automatically reload AeroSpace configuration when it changes
