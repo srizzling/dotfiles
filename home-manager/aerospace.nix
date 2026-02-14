@@ -133,6 +133,10 @@
     # See: https://github.com/nikitabobko/AeroSpace/blob/main/docs/guide.md#assign-workspaces-to-monitors
 
     [[on-window-detected]]
+    if.app-id = 'com.apple.finder'
+    run = 'move-node-to-workspace 1'
+
+    [[on-window-detected]]
     if.app-id = 'com.microsoft.VSCode'
     run = 'move-node-to-workspace C'
 
