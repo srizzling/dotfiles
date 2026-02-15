@@ -199,6 +199,10 @@
     [[on-window-detected]]
     if.app-id = 'com.riotgames.RiotGames.RiotClient'
     run = ['layout floating', 'move-node-to-workspace G']
+
+    [[on-window-detected]]
+    if.app-id = 'com.riotgames.LeagueofLegends.LeagueClientUx'
+    run = ['layout floating', 'move-node-to-workspace G']
   '';
 
   # Automatically reload AeroSpace configuration when it changes
