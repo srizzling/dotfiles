@@ -145,6 +145,10 @@
     run = 'move-node-to-workspace 1'
 
     [[on-window-detected]]
+    if.app-id = 'com.apple.Preview'
+    run = 'move-node-to-workspace 1'
+
+    [[on-window-detected]]
     if.app-id = 'com.microsoft.VSCode'
     run = 'move-node-to-workspace C'
 
