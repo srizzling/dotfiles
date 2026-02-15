@@ -10,9 +10,6 @@
     font-family-bold-italic = Iosevka NFM
     font-size = 23
     
-    # Use Rose Pine theme
-    theme = rose-pine
-    
     # Window padding for better visual appearance
     window-padding-x = 10
     window-padding-y = 10

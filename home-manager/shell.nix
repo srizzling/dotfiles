@@ -133,21 +133,23 @@
       la = "lsd -a";
       l = "lsd";
       tree = "lsd --tree";
-      
+
       # Git aliases (basic ones, more complex ones in git config)
       gs = "git status";
       gd = "git diff";
       gl = "git log --oneline";
-      
-      # Nix/Darwin aliases  
+
+      # Nix/Darwin aliases
       darwin-switch = "darwin-rebuild switch --flake ~/.dotfiles";
       darwin-rollback = "darwin-rebuild rollback";
-      
+
       # OrbStack provides native docker commands, no aliases needed
     };
 
     # Fish functions with fzf integrations
     functions = {
+      # Disable the default fish greeting
+      fish_greeting = "";
       # fzf-enhanced git checkout
       gco = ''
         if git rev-parse --git-dir >/dev/null 2>&1
