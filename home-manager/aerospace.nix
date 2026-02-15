@@ -129,6 +129,14 @@
     alt-shift-k = ['join-with up', 'mode main']
     alt-shift-l = ['join-with right', 'mode main']
 
+    # Assign workspaces to monitors
+    [workspace-to-monitor-force-assignment]
+    1 = ['XB270HU', 'main']  # Finder -> secondary monitor, fallback to main
+    S = ['XB270HU', 'main']  # Social -> secondary monitor, fallback to main
+    M = ['XB270HU', 'main']  # Music -> secondary monitor, fallback to main
+    E = ['XB270HU', 'main']  # Email -> secondary monitor, fallback to main
+    N = ['XB270HU', 'main']  # Notes -> secondary monitor, fallback to main
+
     # Assign applications to workspaces
     # See: https://github.com/nikitabobko/AeroSpace/blob/main/docs/guide.md#assign-workspaces-to-monitors
 
