@@ -1,5 +1,5 @@
 {
-  description = "srizzling's macOS dotfiles";
+  description = "srizzling's dotfiles (macOS + Linux)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -70,9 +70,27 @@
       "work" = mkDarwinSystem "work" "work" "srizzling";
     };
 
-    # Development shell
+    # Linux configurations (standalone home-manager for CachyOS)
+    homeConfigurations = {
+      "srizzling@BlueShell" = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          config.allowUnfree = true;
+        };
+        modules = [
+          ./home-manager/linux.nix
+          catppuccin.homeModules.catppuccin
+        ];
+      };
+    };
+
+    # Development shells
     devShells.aarch64-darwin.default = nixpkgs.legacyPackages.aarch64-darwin.mkShell {
       buildInputs = with nixpkgs.legacyPackages.aarch64-darwin; [ gnumake ];
+    };
+
+    devShells.x86_64-linux.default = nixpkgs.legacyPackages.x86_64-linux.mkShell {
+      buildInputs = with nixpkgs.legacyPackages.x86_64-linux; [ gnumake ];
     };
   };
 }

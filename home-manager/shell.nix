@@ -1,4 +1,4 @@
-{ config, pkgs, profile, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Ensure Fish directories exist and set initial theme
@@ -12,20 +12,30 @@
     
     # Set PATH early before aliases are loaded (for both login and non-login shells)
     shellInit = ''
-      # Add Nix system-wide packages to PATH
+      # Add Nix packages to PATH
+      ${lib.optionalString pkgs.stdenv.isDarwin ''
       fish_add_path --prepend /run/current-system/sw/bin
+      ''}
       fish_add_path --prepend /nix/var/nix/profiles/default/bin
       fish_add_path --prepend /etc/profiles/per-user/srizzling/bin
       fish_add_path --prepend $HOME/.local/bin
+      ${lib.optionalString pkgs.stdenv.isLinux ''
+      fish_add_path --prepend $HOME/.nix-profile/bin
+      ''}
     '';
-    
+
     # Also set PATH for login shells
     loginShellInit = ''
-      # Add Nix system-wide packages to PATH
+      # Add Nix packages to PATH
+      ${lib.optionalString pkgs.stdenv.isDarwin ''
       fish_add_path --prepend /run/current-system/sw/bin
+      ''}
       fish_add_path --prepend /nix/var/nix/profiles/default/bin
       fish_add_path --prepend /etc/profiles/per-user/srizzling/bin
       fish_add_path --prepend $HOME/.local/bin
+      ${lib.optionalString pkgs.stdenv.isLinux ''
+      fish_add_path --prepend $HOME/.nix-profile/bin
+      ''}
     '';
     
     # Additional interactive shell configuration
@@ -138,13 +148,14 @@
       gs = "git status";
       gd = "git diff";
       gl = "git log --oneline";
-
-      # Nix/Darwin aliases
+    } // (if pkgs.stdenv.isDarwin then {
+      # macOS Nix/Darwin aliases
       darwin-switch = "darwin-rebuild switch --flake ~/.dotfiles";
       darwin-rollback = "darwin-rebuild rollback";
-
-      # OrbStack provides native docker commands, no aliases needed
-    };
+    } else {
+      # Linux home-manager aliases
+      hm-switch = "home-manager switch --flake ~/.dotfiles#srizzling@BlueShell";
+    });
 
     # Fish functions with fzf integrations
     functions = {

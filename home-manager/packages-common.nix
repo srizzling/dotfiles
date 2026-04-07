@@ -1,8 +1,8 @@
-{ config, pkgs, profile, ... }:
+{ config, pkgs, ... }:
 
 {
   # Note: allowUnfree is configured at system level when using useGlobalPkgs
-  # User packages - migrated from devbox global
+  # Cross-platform CLI tools and configurations shared between macOS and Linux
   home.packages = with pkgs; [
     # Core utilities (from devbox global)
     bat
@@ -26,32 +26,22 @@
     ripgrep
     tree
     htop
-    
+
     # Development tools
     gh  # GitHub CLI
     just  # Command runner
     devbox  # Isolated development environments
     claude-code  # Agentic coding tool by Anthropic
     cocogitto  # Conventional commits toolbox
-    mame-tools  # MAME tools including chdman
-    
+
     # Fish shell tools
     fishPlugins.fishtape  # TAP-compliant test runner for Fish
-    
+
     # Fonts
-    nerd-fonts.iosevka  # Iosevka NFM font for Ghostty
-    
-    # GUI Applications (official packages from nixpkgs)
-    raycast
-    aerospace
-    # ghostty  # Terminal emulator - build issues on this system
-    discord
-    vscode
-    slack
-    spotify
+    nerd-fonts.iosevka  # Iosevka NFM font for terminal
+
+    # Terminal music client
     spotify-player  # Terminal-based spotify client
-    firefox
-    # whatsapp-for-linux  # Removed - Linux only package causing build issues
   ];
 
   # Enable direnv integration
@@ -85,7 +75,6 @@
     enableFishIntegration = true;
   };
 
-
   # Configure GitHub CLI
   programs.gh = {
     enable = true;
@@ -103,5 +92,4 @@
       };
     };
   };
-
 }

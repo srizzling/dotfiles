@@ -1,9 +1,10 @@
-# Nix Darwin Dotfiles Makefile (Apple Silicon only)
-# Usage: make bootstrap-personal (or bootstrap-work)
+# Nix Dotfiles Makefile (macOS + Linux)
+# Usage: make bootstrap-personal (or bootstrap-work, bootstrap-linux)
 
 # Configuration names
 PERSONAL_CONFIG = personal
 WORK_CONFIG = work
+LINUX_CONFIG = srizzling@BlueShell
 
 test-flake: ## Check Nix flake evaluation
 	@echo "🔍 Checking Nix flake..."
@@ -32,6 +33,11 @@ help:
 	@echo ""
 	@echo "Release commands:"
 	@echo "  make release                  - Create new release based on conventional commits"
+	@echo ""
+	@echo "Linux commands:"
+	@echo "  make bootstrap-linux          - Bootstrap Linux (CachyOS) configuration"
+	@echo "  make switch-linux             - Apply Linux home-manager configuration"
+	@echo "  make install-pacman-deps      - Install required pacman/AUR packages"
 	@echo ""
 	@echo "Installation commands:"
 	@echo "  make install-nix              - Install Nix with flakes support"
@@ -157,4 +163,41 @@ release: ## Create new release based on conventional commits
 	@echo "🏷️ Pushing tag to remote to trigger GitHub release..."
 	@git push origin $$(git describe --tags --abbrev=0)
 	@echo "✅ Release created and pushed! GitHub workflow will create the release automatically."
+
+# ── Linux (CachyOS/Hyprland) targets ──
+
+# Bootstrap Linux configuration (first-time setup)
+.PHONY: bootstrap-linux
+bootstrap-linux: check-nix
+	@echo "Bootstrapping Linux (CachyOS) configuration..."
+	@$(MAKE) install-pacman-deps
+	@nix run home-manager -- switch -b backup --flake .#$(LINUX_CONFIG)
+	@echo "Bootstrap complete! You may need to restart Hyprland for all changes to take effect."
+
+# Apply Linux home-manager configuration
+.PHONY: switch-linux
+switch-linux: check-nix
+	@echo "Applying Linux home-manager configuration..."
+	@home-manager switch -b backup --flake .#$(LINUX_CONFIG)
+
+# Install required pacman/AUR packages for the Linux setup
+.PHONY: install-pacman-deps
+install-pacman-deps:
+	@echo "Installing system packages via pacman..."
+	sudo pacman -S --needed ghostty ghostty-shell-integration hyprlock hypridle playerctl fuzzel awww yad dms-shell-hyprland matugen
+	@echo "Installing GUI apps via pacman..."
+	sudo pacman -S --needed vesktop freetube spotify-launcher
+	@echo "Installing AUR packages via paru..."
+	paru -S --needed zapzap
+	@echo "All system packages installed."
+
+# Setup Spotify Rose Pine theme via spicetify
+.PHONY: setup-spotify-theme
+setup-spotify-theme:
+	@echo "Setting up Spotify Rose Pine theme..."
+	@spicetify config current_theme catppuccin
+	@spicetify config color_scheme macchiato
+	@spicetify config inject_css 1 replace_colors 1
+	@spicetify backup apply
+	@echo "Spotify theme applied! Restart Spotify to see changes."
 

@@ -1,4 +1,4 @@
-{ config, pkgs, profile, ... }:
+{ config, pkgs, ... }:
 
 {
   # Git configuration

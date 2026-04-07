@@ -2,7 +2,8 @@
 
 {
   imports = [
-    ./packages.nix
+    ./packages-common.nix
+    ./packages-darwin.nix
     ./shell.nix
     ./git.nix
     ./aerospace.nix
