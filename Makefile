@@ -219,11 +219,11 @@ switch-linux: check-nix
 .PHONY: install-pacman-deps
 install-pacman-deps:
 	@echo "Installing system packages via pacman..."
-	sudo pacman -S --needed ghostty ghostty-shell-integration hyprlock hypridle playerctl fuzzel awww yad dms-shell-hyprland matugen
+	sudo pacman -S --needed ghostty ghostty-shell-integration hyprlock hypridle playerctl fuzzel awww yad dms-shell-hyprland matugen swaync nwg-dock-hyprland
 	@echo "Installing GUI apps via pacman..."
 	sudo pacman -S --needed vesktop freetube spotify-launcher
 	@echo "Installing AUR packages via paru..."
-	paru -S --needed zapzap
+	paru -S --needed zapzap waybar-module-pacman-updates-git
 	@echo "All system packages installed."
 
 # Setup Spotify Rose Pine theme via spicetify

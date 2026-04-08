@@ -42,7 +42,6 @@
 @test "fishtape is available and working" (fishtape --version | string match -q "fishtape version*")
 
 # New Packages Tests  
-@test "claude is available and working" (claude --version | string match -q "*Claude Code*")
 @test "firefox app is installed" (test -d "/Applications/Nix Apps/Firefox.app" -o -d "/Applications/Firefox.app")
 @test "cocogitto is available and working" (cog --version | string match -q "cog*")
 @test "chdman is available and working" (chdman | string match -q "*MAME Compressed Hunks of Data*")

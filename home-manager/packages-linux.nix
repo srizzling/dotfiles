@@ -9,23 +9,7 @@
     playerctl
   ];
 
-  # Firefox managed via programs.firefox for theme integration
-  programs.firefox = {
-    enable = true;
-    profiles.default = {
-      isDefault = true;
-      extensions.force = true;
-      settings = {
-        # Dark theme
-        "browser.theme.content-theme" = 0;
-        "browser.theme.toolbar-theme" = 0;
-        "ui.systemUsesDarkTheme" = 1;
-        # Wayland native
-        "widget.use-xdg-desktop-portal.file-picker" = 1;
-        # Performance
-        "gfx.webrender.all" = true;
-        "media.ffmpeg.vaapi.enabled" = true;
-      };
-    };
-  };
+  # Firefox — install only, let Firefox manage its own profiles
+  # Using programs.firefox with profiles breaks existing Firefox profile loading
+  programs.firefox.enable = true;
 }

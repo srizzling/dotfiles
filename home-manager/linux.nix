@@ -11,7 +11,7 @@
     ./hyprland.nix
     ./waybar.nix
     ./fuzzel.nix
-    ./dunst.nix
+    ./swaync.nix
     ../profiles/gaming.nix
   ];
 
@@ -77,7 +77,7 @@
 
   # GTK Rose Pine theme for popups and GTK apps
   home.file.".config/gtk-3.0/gtk.css".text = ''
-    /* Rose Pine dark overrides for GTK3 apps */
+    /* Rose Pine dark — theme color variables for GTK3 */
     @define-color theme_bg_color #191724;
     @define-color theme_fg_color #e0def4;
     @define-color theme_base_color #1f1d2e;
@@ -85,11 +85,7 @@
     @define-color theme_selected_bg_color #c4a7e7;
     @define-color theme_selected_fg_color #191724;
 
-    window, dialog {
-      background-color: #191724;
-      color: #e0def4;
-    }
-
+    /* Calendar popup (yad) */
     calendar {
       background-color: #191724;
       color: #e0def4;
@@ -116,22 +112,61 @@
     calendar:indeterminate {
       color: #6e6a86;
     }
+  '';
 
-    button {
-      background-color: #26233a;
-      color: #e0def4;
-      border: 1px solid #403d52;
-      border-radius: 6px;
-      padding: 4px 8px;
+  # nwg-dock-hyprland — Rose Pine themed dock
+  xdg.configFile."nwg-dock-hyprland/style.css".text = ''
+    window {
+        background: rgba(25, 23, 36, 0.0);
+    }
+
+    #box-outer {
+        background: rgba(25, 23, 36, 0.9);
+        border: 1px solid rgba(38, 35, 58, 0.5);
+        border-radius: 12px;
+        padding: 4px 8px;
+        margin: 0;
+    }
+
+    button, image {
+        background: none;
+        border: none;
+        border-radius: 8px;
+        padding: 4px;
+        margin: 2px;
+        transition: 200ms;
     }
 
     button:hover {
-      background-color: #403d52;
+        background: rgba(38, 35, 58, 0.6);
     }
 
-    button:active, button:checked {
-      background-color: #c4a7e7;
-      color: #191724;
+    button:focus {
+        box-shadow: none;
+    }
+
+    /* ── context menu (multi-window picker) ── */
+    menu, menuitem {
+        background-color: #1f1d2e;
+        color: #e0def4;
+        border: none;
+        border-radius: 0;
+    }
+
+    menu {
+        border: 1px solid #26233a;
+        border-radius: 8px;
+        padding: 4px;
+    }
+
+    menuitem {
+        padding: 6px 12px;
+        border-radius: 6px;
+    }
+
+    menuitem:hover {
+        background-color: #26233a;
+        color: #e0def4;
     }
   '';
 

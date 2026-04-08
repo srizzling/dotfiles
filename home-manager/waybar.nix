@@ -1,61 +1,130 @@
 { config, pkgs, lib, ... }:
 
 {
-  xdg.configFile."waybar/config.jsonc".text = builtins.toJSON {
-    layer = "top";
-    position = "top";
-    height = 34;
-    margin-top = 6;
-    margin-left = 8;
-    margin-right = 8;
-    spacing = 4;
-    reload_style_on_change = true;
+  xdg.configFile."waybar/config.jsonc".text = builtins.toJSON [
+    # ── Top bar: workspaces, clock, system info ──
+    {
+      name = "top";
+      layer = "top";
+      position = "top";
+      height = 34;
+      margin-top = 6;
+      margin-left = 8;
+      margin-right = 8;
+      spacing = 4;
+      reload_style_on_change = true;
 
-    modules-left = [ "hyprland/workspaces" ];
-    modules-center = [ "clock" ];
-    modules-right = [ "custom/gpu-temp" "custom/cpu-temp" "custom/cachyos-updates" ];
+      modules-left = [ "hyprland/workspaces" ];
+      modules-center = [ "clock" ];
+      modules-right = [ "cpu" "memory" "custom/gpu-temp" "custom/cpu-temp" "custom/pacman-updates" "custom/notifications" "tray" "custom/power" ];
 
-    "hyprland/workspaces" = {
-      format = "{name}";
-      on-click = "activate";
-      sort-by-number = false;
-      persistent-workspaces = {
-        "1" = [];
-        "2" = [];
-        "B" = [];
-        "C" = [];
-        "T" = [];
-        "G" = [];
-        "S" = [];
-        "M" = [];
+      "hyprland/workspaces" = {
+        format = "{icon}";
+        format-icons = {
+          "1" = "󰎤";
+          "2" = "󰎧";
+          "B" = "󰈹";
+          "C" = "󰨞";
+          "T" = "󰆍";
+          "G" = "󰊗";
+          "S" = "󰓇";
+          "M" = "󰍩";
+          "E" = "󰇮";
+          "N" = "󰗃";
+          default = "󰊠";
+        };
+        on-click = "activate";
+        sort-by-number = false;
+        persistent-workspaces = {
+          "1" = [];
+          "2" = [];
+          "B" = [];
+          "C" = [];
+          "T" = [];
+          "G" = [];
+          "S" = [];
+          "M" = [];
+        };
       };
-    };
 
-    clock = {
-      format = "{:%H:%M}";
-      format-alt = "{:%a %d %b · %H:%M}";
-      tooltip-format = "<tt><big>{:%B %Y}</big>\n\n{calendar}</tt>";
-    };
+      clock = {
+        format = "󰥔 {:%H:%M}";
+        format-alt = "󰃭 {:%a %d %b · %H:%M}";
+        tooltip-format = "<tt><big>{:%B %Y}</big>\n\n{calendar}</tt>";
+      };
 
-    "custom/cpu-temp" = {
-      format = "CPU {}°";
-      exec = "awk '{printf \"%.0f\", $1/1000}' /sys/class/hwmon/hwmon1/temp1_input";
-      interval = 5;
-    };
+      cpu = {
+        format = " {usage}%";
+        interval = 5;
+        tooltip-format = "CPU: {usage}% ({load} load avg)";
+        on-click = "ghostty -e btop";
+      };
 
-    "custom/gpu-temp" = {
-      format = "GPU {}°";
-      exec = "nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits 2>/dev/null || echo '?'";
-      interval = 5;
-    };
+      memory = {
+        format = "󰍛 {percentage}%";
+        interval = 10;
+        tooltip-format = "RAM: {used:0.1f}G / {total:0.1f}G";
+        on-click = "ghostty -e btop";
+      };
 
-    "custom/cachyos-updates" = {
-      format = "UPD {}";
-      exec = "checkupdates 2>/dev/null | wc -l";
-      interval = 600;
-      on-click = "ghostty -e paru -Syu";
-    };
-  };
+      "custom/cpu-temp" = {
+        format = "󱃃 {}°";
+        exec = "awk '{printf \"%.0f\", $1/1000}' /sys/class/hwmon/hwmon1/temp1_input";
+        interval = 5;
+        tooltip = "CPU Temperature";
+      };
+
+      "custom/gpu-temp" = {
+        format = "󰢮 {}°";
+        exec = "nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits 2>/dev/null || echo '?'";
+        interval = 5;
+        tooltip = "GPU Temperature";
+      };
+
+      "custom/pacman-updates" = {
+        format = "󰏔 {text}";
+        format-icons = {
+          has-updates = "󰏔";
+          updated = "󰄬";
+        };
+        exec = "waybar-module-pacman-updates";
+        return-type = "json";
+        on-click = "ghostty -e cachy-update";
+      };
+
+      "custom/notifications" = {
+        tooltip = false;
+        format = "{icon} {text}";
+        format-icons = {
+          notification = "󰂚";
+          none = "󰂜";
+          dnd-notification = "󰂛";
+          dnd-none = "󰪑";
+          inhibited-notification = "󰂚";
+          inhibited-none = "󰂜";
+          dnd-inhibited-notification = "󰂛";
+          dnd-inhibited-none = "󰪑";
+        };
+        return-type = "json";
+        exec = "swaync-client -swb";
+        on-click = "swaync-client -t -sw";
+        on-click-right = "swaync-client -d -sw";
+        escape = true;
+      };
+
+      tray = {
+        icon-size = 16;
+        spacing = 6;
+      };
+
+      "custom/power" = {
+        format = "⏻";
+        tooltip = false;
+        on-click = "echo -e '  Lock\n  Logout\n  Restart\n⏻  Shutdown' | fuzzel --dmenu -w 20 -l 4 | xargs -I{} sh -c 'case \"{}\" in *Lock*) hyprlock;; *Logout*) hyprctl dispatch exit;; *Restart*) systemctl reboot;; *Shutdown*) systemctl poweroff;; esac'";
+      };
+    }
+
+  ];
 
   xdg.configFile."waybar/style.css".text = ''
     @define-color base    #191724;
@@ -72,7 +141,7 @@
     @define-color iris    #c4a7e7;
 
     * {
-        font-family: "Iosevka NFM";
+        font-family: "Iosevka Nerd Font", "Iosevka NF";
         font-size: 12px;
         min-height: 0;
         padding: 0;
@@ -87,14 +156,20 @@
     /* ── pill base ── */
     #workspaces,
     #clock,
+    #cpu,
+    #memory,
     #custom-cpu-temp,
     #custom-gpu-temp,
-    #custom-cachyos-updates {
+    #custom-pacman-updates,
+    #custom-notifications,
+    #custom-power,
+    #tray {
         background: alpha(@base, 0.9);
         border: 1px solid alpha(@overlay, 0.5);
         border-radius: 8px;
         padding: 4px 12px;
         margin: 3px 0;
+        transition: all 200ms cubic-bezier(.4, 0, .2, 1);
     }
 
     /* ── workspaces (iris) ── */
@@ -138,6 +213,16 @@
         font-weight: bold;
     }
 
+    /* ── cpu usage (pine) ── */
+    #cpu {
+        color: @pine;
+    }
+
+    /* ── memory (foam) ── */
+    #memory {
+        color: @foam;
+    }
+
     /* ── cpu temp (gold) ── */
     #custom-cpu-temp {
         color: @gold;
@@ -149,16 +234,47 @@
     }
 
     /* ── updates (iris) ── */
-    #custom-cachyos-updates {
+    #custom-pacman-updates {
         color: @iris;
+    }
+
+    /* ── notifications (rose) ── */
+    #custom-notifications {
+        color: @rose;
+    }
+
+    /* ── power (love) ── */
+    #custom-power {
+        color: @love;
+        padding: 4px 10px;
+    }
+
+    /* ── tray ── */
+    #tray {
+        padding: 4px 8px;
+    }
+
+    #tray > .passive {
+        -gtk-icon-effect: dim;
+    }
+
+    #tray > .needs-attention {
+        -gtk-icon-effect: highlight;
+        color: @love;
     }
 
     /* ── hover ── */
     #clock:hover,
+    #cpu:hover,
+    #memory:hover,
     #custom-cpu-temp:hover,
     #custom-gpu-temp:hover,
-    #custom-cachyos-updates:hover {
+    #custom-pacman-updates:hover,
+    #custom-notifications:hover,
+    #custom-power:hover,
+    #tray:hover {
         background: alpha(@surface, 0.9);
+        border-color: alpha(@muted, 0.4);
     }
 
     /* ── tooltips ── */

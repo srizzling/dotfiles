@@ -139,9 +139,11 @@
     #################
 
     exec-once = waybar
-    exec-once = dunst
+    exec-once = swaync
     exec-once = hypridle
     exec-once = awww-daemon
+    exec-once = /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+    exec-once = nwg-dock-hyprland -d -hd 20 -l overlay -hl overlay -mb 6 -ml 8 -mr 8 -i 36 -nolauncher
     exec = awww img ~/wallpapers/wallpaper.png --transition-type grow --transition-pos center --transition-duration 1
 
 
