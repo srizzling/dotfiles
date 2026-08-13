@@ -71,6 +71,7 @@
     # See: https://github.com/nikitabobko/AeroSpace/blob/main/docs/commands.md#workspace
     alt-1 = 'workspace 1'
     alt-2 = 'workspace 2'
+    alt-a = 'workspace A'  # AI
     alt-b = 'workspace B'  # Browser
     alt-c = 'workspace C'  # Code
     alt-e = 'workspace E'  # Email
@@ -83,6 +84,7 @@
     # See: https://github.com/nikitabobko/AeroSpace/blob/main/docs/commands.md#move-node-to-workspace
     alt-shift-1 = 'move-node-to-workspace 1'
     alt-shift-2 = 'move-node-to-workspace 2'
+    alt-shift-a = 'move-node-to-workspace A'
     alt-shift-b = 'move-node-to-workspace B'
     alt-shift-c = 'move-node-to-workspace C'
     alt-shift-e = 'move-node-to-workspace E'
@@ -131,6 +133,7 @@
 
     # Assign workspaces to monitors
     [workspace-to-monitor-force-assignment]
+    A = 'main'               # AI -> primary monitor
     1 = ['XB270HU', 'main']  # Finder -> secondary monitor, fallback to main
     S = ['XB270HU', 'main']  # Social -> secondary monitor, fallback to main
     M = ['XB270HU', 'main']  # Music -> secondary monitor, fallback to main
@@ -151,6 +154,14 @@
     [[on-window-detected]]
     if.app-id = 'com.microsoft.VSCode'
     run = 'move-node-to-workspace C'
+
+    [[on-window-detected]]
+    if.app-id = 'com.anthropic.claudefordesktop'
+    run = 'move-node-to-workspace A'
+
+    [[on-window-detected]]
+    if.app-id = 'com.openai.codex'
+    run = 'move-node-to-workspace A'
 
     [[on-window-detected]]
     if.app-id = 'com.google.Chrome'
