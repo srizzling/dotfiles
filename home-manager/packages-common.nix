@@ -50,15 +50,19 @@
     nix-direnv.enable = true;
   };
 
-  # Make `use devenv` available to every .envrc without per-project boilerplate.
-  # direnv sources everything in this lib directory before evaluating an .envrc,
-  # so projects need only `use devenv` rather than devenv's documented
-  # `eval "$(devenv direnvrc)"` line repeated in each one. Evaluated at load
-  # time rather than baked in, so it stays correct across devenv upgrades —
-  # `devenv direnvrc` is a ~60ms static print.
-  xdg.configFile."direnv/lib/devenv.sh".text = ''
-    eval "$(${pkgs.devenv}/bin/devenv direnvrc)"
-  '';
+  # devenv's direnvrc is deliberately NOT installed into ~/.config/direnv/lib.
+  # Both it and nix-direnv define _nix_direnv_preflight, and direnv sources that
+  # directory alphabetically, so nix-direnv's copy (hm-nix-direnv.sh) would
+  # override devenv's (devenv.sh). `use devenv` then calls the wrong preflight,
+  # DEVENV_BIN is never set, and the shell silently fails to build.
+  #
+  # Projects use devenv's documented two-line .envrc instead, which is evaluated
+  # after the lib directory and therefore wins:
+  #
+  #   eval "$(devenv direnvrc)"
+  #   use devenv
+  #
+  # `devinit` writes both lines, so this costs nothing per project.
 
   # Configure vim editor
   programs.vim = {

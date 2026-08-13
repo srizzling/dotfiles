@@ -92,9 +92,18 @@
     ## What this means
 
     - Define the environment in `devenv.nix`, with `devenv.yaml` for inputs.
-    - Activate it through direnv: an `.envrc` containing `use devenv`. That one
-      line is enough — devenv's direnvrc is installed globally, so projects do
-      not need devenv's `eval "$(devenv direnvrc)"` bootstrap.
+    - Activate it through direnv. The `.envrc` must contain both of these lines,
+      in this order:
+
+      ```bash
+      eval "$(devenv direnvrc)"
+      use devenv
+      ```
+
+      The eval is not optional. devenv and nix-direnv both define
+      `_nix_direnv_preflight`, and direnv loads its lib directory before the
+      `.envrc`, so without the per-project eval nix-direnv wins and
+      `use devenv` fails to build the shell.
     - Everything a project needs to build, test and run belongs in `devenv.nix`,
       so a clean checkout plus `direnv allow` is enough to start working.
 

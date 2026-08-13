@@ -88,7 +88,14 @@ devinit          # scaffolds devenv.nix, devenv.yaml and .envrc, then direnv all
 
 `devinit` refuses to run outside those two directories, won't overwrite an existing `devenv.nix`, and warns if the project still carries a competing `flake.nix`, `devbox.json` or `shell.nix`.
 
-Activation is automatic: devenv's direnvrc is installed into direnv's lib directory, so a project's `.envrc` needs only `use devenv` rather than repeating devenv's `eval` bootstrap in each one.
+Activation is automatic through direnv. Each project's `.envrc` is devenv's documented two-liner, which `devinit` writes for you:
+
+```bash
+eval "$(devenv direnvrc)"
+use devenv
+```
+
+Both lines are needed. devenv and nix-direnv each define `_nix_direnv_preflight`, and direnv loads its lib directory alphabetically, so installing devenv's direnvrc globally lets nix-direnv override it and `use devenv` fails. Evaluating per-project runs after the libs and wins.
 
 The rule is also stated in the generated `~/CLAUDE.md`, so Claude follows it in any project.
 

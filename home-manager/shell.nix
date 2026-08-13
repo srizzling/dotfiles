@@ -243,9 +243,10 @@
         devenv init
         or return 1
 
-        # devenv init does not write an .envrc. `use devenv` is enough here
-        # because home-manager installs devenv's direnvrc into direnv's lib dir.
-        echo "use devenv" > .envrc
+        # devenv init does not write an .envrc. Both lines are required: the
+        # eval must happen per-project so devenv's _nix_direnv_preflight wins
+        # over nix-direnv's, which direnv loads from its lib directory first.
+        printf '%s\n' 'eval "$(devenv direnvrc)"' 'use devenv' > .envrc
 
         if command -v direnv >/dev/null 2>&1
           direnv allow
