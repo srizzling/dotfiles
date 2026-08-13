@@ -211,6 +211,56 @@
       fenv = ''
         env | fzf --height=50% --reverse --preview='echo "Variable: {1}"'
       '';
+
+      # Initialise a project's development environment with devenv.
+      # Projects under ~/development must use devenv and nothing else — see the
+      # Development Environments section of ~/CLAUDE.md.
+      devinit = ''
+        set -l dir (pwd)
+
+        set -l allowed 0
+        if string match -q "$HOME/development/personal/*" $dir
+          set allowed 1
+        end
+        if string match -q "$HOME/development/work/*" $dir
+          set allowed 1
+        end
+        if test $allowed -eq 0
+          echo "devinit: only for projects under ~/development/personal or ~/development/work"
+          echo "         current directory: $dir"
+          return 1
+        end
+
+        if test -e devenv.nix
+          echo "devinit: devenv.nix already exists, nothing to do"
+          return 1
+        end
+
+        devinit_warn_conflict flake.nix "migrate its devShell into devenv.nix, then delete it"
+        devinit_warn_conflict devbox.json "migrate its packages into devenv.nix, then delete it"
+        devinit_warn_conflict shell.nix "migrate it into devenv.nix, then delete it"
+
+        devenv init
+        or return 1
+
+        # devenv init does not write an .envrc. `use devenv` is enough here
+        # because home-manager installs devenv's direnvrc into direnv's lib dir.
+        echo "use devenv" > .envrc
+
+        if command -v direnv >/dev/null 2>&1
+          direnv allow
+        end
+
+        echo "devinit: created devenv.nix and .envrc — add your toolchain to devenv.nix"
+      '';
+
+      # Warn when a project carries a competing environment definition.
+      devinit_warn_conflict = ''
+        if test -e $argv[1]
+          echo "devinit: warning — this project still has $argv[1]"
+          echo "         $argv[2]"
+        end
+      '';
       
       # fzf-enhanced command history search with execution
       fh = ''

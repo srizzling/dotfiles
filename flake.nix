@@ -84,13 +84,8 @@
       };
     };
 
-    # Development shells
-    devShells.aarch64-darwin.default = nixpkgs.legacyPackages.aarch64-darwin.mkShell {
-      buildInputs = with nixpkgs.legacyPackages.aarch64-darwin; [ gnumake ];
-    };
-
-    devShells.x86_64-linux.default = nixpkgs.legacyPackages.x86_64-linux.mkShell {
-      buildInputs = with nixpkgs.legacyPackages.x86_64-linux; [ gnumake ];
-    };
+    # No devShells: projects use devenv (see the Development Environments
+    # section of the generated ~/CLAUDE.md). gnumake comes from the system
+    # package set, so this repo needs no shell of its own.
   };
 }

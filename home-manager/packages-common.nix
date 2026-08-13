@@ -31,7 +31,6 @@
     gh  # GitHub CLI
     just  # Command runner
     devenv  # Standard dev environment for projects under ~/development
-    devbox  # Isolated development environments
     claude-code  # Agentic coding tool by Anthropic
     cocogitto  # Conventional commits toolbox
 
@@ -50,6 +49,16 @@
     enable = true;
     nix-direnv.enable = true;
   };
+
+  # Make `use devenv` available to every .envrc without per-project boilerplate.
+  # direnv sources everything in this lib directory before evaluating an .envrc,
+  # so projects need only `use devenv` rather than devenv's documented
+  # `eval "$(devenv direnvrc)"` line repeated in each one. Evaluated at load
+  # time rather than baked in, so it stays correct across devenv upgrades —
+  # `devenv direnvrc` is a ~60ms static print.
+  xdg.configFile."direnv/lib/devenv.sh".text = ''
+    eval "$(${pkgs.devenv}/bin/devenv direnvrc)"
+  '';
 
   # Configure vim editor
   programs.vim = {
