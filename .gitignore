@@ -6,6 +6,9 @@ Brewfile.lock.json
 result
 result-*
 
+# GoReleaser build output
+dist/
+
 # macOS
 .DS_Store
 .DS_Store?
