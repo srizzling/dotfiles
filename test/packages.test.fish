@@ -29,7 +29,7 @@
 @test "tree is available and working" (tree --version | string match -q "tree v*")
 @test "htop is available and working" (htop --version | string match -q "htop*")  
 @test "just is available and working" (just --version | string match -q "just*")
-@test "devbox is available and working" (devbox version | string match -q "*.*")
+@test "devenv is available and working" (devenv version | string match -q "devenv *")
 
 # Container Tools Tests (OrbStack provides native docker)
 @test "docker is available via OrbStack" (docker --version | string match -q "Docker version*")

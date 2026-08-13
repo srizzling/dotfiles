@@ -92,9 +92,18 @@
     ## What this means
 
     - Define the environment in `devenv.nix`, with `devenv.yaml` for inputs.
-    - Activate it through direnv: an `.envrc` containing `use devenv`.
+    - Activate it through direnv: an `.envrc` containing `use devenv`. That one
+      line is enough — devenv's direnvrc is installed globally, so projects do
+      not need devenv's `eval "$(devenv direnvrc)"` bootstrap.
     - Everything a project needs to build, test and run belongs in `devenv.nix`,
       so a clean checkout plus `direnv allow` is enough to start working.
+
+    ## Setting up a project
+
+    Run `devinit` in the project directory. It scaffolds `devenv.nix`,
+    `devenv.yaml` and `.envrc`, then runs `direnv allow`. It refuses to run
+    outside the two directories above, refuses to overwrite an existing
+    `devenv.nix`, and warns when a competing environment file is still present.
 
     ## Do not introduce alternatives
 

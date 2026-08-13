@@ -44,9 +44,9 @@ make release       # Create new release
 ## Tools Included
 
 ### Development
-- **Languages**: Python, Node.js, Go, Rust toolchains via devbox
+- **Languages**: per-project toolchains via devenv (see Development Environments)
 - **CLI Tools**: git, gh, ripgrep, fd, fzf, jq, curl, wget, just
-- **Development**: docker (via OrbStack), devbox, claude-code
+- **Development**: docker (via OrbStack), devenv, claude-code
 
 ### Terminal
 - **Shell**: Fish with plugins, autosuggestions, git-emoji functions  
@@ -76,6 +76,21 @@ make release       # Create new release
 - **Multi-profile**: `personal` and `work` on macOS; `srizzling@BlueShell` on Linux
 - **Shared modules**: `packages-common.nix` and the shell/git/theme modules apply everywhere; `packages-darwin.nix` and `packages-linux.nix` hold the platform-specific sets
 - **Testing**: All packages tested with Fish-based test runners
+
+## Development Environments
+
+Every project under `~/development/personal/` and `~/development/work/` uses [devenv](https://devenv.sh) — no bare `shell.nix`, no `devbox.json`, no version managers, and no globally installed toolchains standing in for project dependencies.
+
+```bash
+cd ~/development/personal/my-project
+devinit          # scaffolds devenv.nix, devenv.yaml and .envrc, then direnv allow
+```
+
+`devinit` refuses to run outside those two directories, won't overwrite an existing `devenv.nix`, and warns if the project still carries a competing `flake.nix`, `devbox.json` or `shell.nix`.
+
+Activation is automatic: devenv's direnvrc is installed into direnv's lib directory, so a project's `.envrc` needs only `use devenv` rather than repeating devenv's `eval` bootstrap in each one.
+
+The rule is also stated in the generated `~/CLAUDE.md`, so Claude follows it in any project.
 
 ## Releasing
 

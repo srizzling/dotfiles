@@ -4,7 +4,7 @@
   # Note: allowUnfree is configured at system level when using useGlobalPkgs
   # Cross-platform CLI tools and configurations shared between macOS and Linux
   home.packages = with pkgs; [
-    # Core utilities (from devbox global)
+    # Core utilities
     bat
     curl
     direnv
