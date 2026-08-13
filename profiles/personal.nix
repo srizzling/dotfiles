@@ -4,9 +4,9 @@
   # Personal profile configuration
   
   # Git configuration for personal projects
-  programs.git = {
-    userName = "Sriram Venkatesh";
-    userEmail = "venksriram@gmail.com";
+  programs.git.settings.user = {
+    name = "Sriram Venkatesh";
+    email = "venksriram@gmail.com";
   };
 
   # Personal-specific environment variables

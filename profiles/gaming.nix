@@ -4,9 +4,9 @@
   # Gaming profile for CachyOS/Hyprland machine
 
   # Git configuration (same as personal)
-  programs.git = {
-    userName = "Sriram Venkatesh";
-    userEmail = "venksriram@gmail.com";
+  programs.git.settings.user = {
+    name = "Sriram Venkatesh";
+    email = "venksriram@gmail.com";
   };
 
   # Gaming-specific environment variables

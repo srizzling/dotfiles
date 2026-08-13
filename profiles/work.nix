@@ -4,9 +4,9 @@
   # Work profile configuration
   
   # Git configuration for work projects  
-  programs.git = {
-    userName = "Sriram Venkatesh";
-    userEmail = "sriram.venkatesh@versent.com.au";  # Placeholder - update with actual work email
+  programs.git.settings.user = {
+    name = "Sriram Venkatesh";
+    email = "sriram.venkatesh@versent.com.au";  # Placeholder - update with actual work email
   };
 
   # Work-specific environment variables

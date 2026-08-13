@@ -4,6 +4,10 @@
   # Enable Catppuccin theming for tools without rose-pine themes
   catppuccin = {
     enable = true;
+    # Upstream is moving to autoEnable for port enrollment, with enable becoming
+    # a global kill switch. Setting it explicitly keeps today's behaviour and
+    # silences the migration warning. Per-port opt-outs below still apply.
+    autoEnable = true;
     flavor = "macchiato";
 
     # Disable for tools that have rose-pine themes configured
