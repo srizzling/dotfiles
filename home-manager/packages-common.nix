@@ -18,7 +18,7 @@
     lsd
     starship
     wget
-    python310
+    python3
     zoxide
 
     # Additional useful packages

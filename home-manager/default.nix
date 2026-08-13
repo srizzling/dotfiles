@@ -1,4 +1,4 @@
-{ config, pkgs, profile, ... }:
+{ config, pkgs, lib, profile, ... }:
 
 {
   imports = [
@@ -28,7 +28,7 @@
   # Basic shell setup
   home.sessionVariables = {
     EDITOR = "vim";
-    VISUAL = "code";
+    VISUAL = lib.mkForce "code";
     WEDITOR = "code";
   };
 

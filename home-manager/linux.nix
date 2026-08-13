@@ -29,7 +29,7 @@
   # Basic shell setup
   home.sessionVariables = {
     EDITOR = "vim";
-    VISUAL = "code";
+    VISUAL = lib.mkForce "code";
     WEDITOR = "code";
     BROWSER = "firefox";
   };
