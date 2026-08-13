@@ -160,7 +160,8 @@ release-notes: ## Show commits since the last tag (source material for RELEASE_N
 	@LAST=$$(git describe --tags --abbrev=0); \
 	echo "Commits since $$LAST:"; \
 	echo ""; \
-	git log --no-merges --format='%h %s%n%w(0,4,4)%b' $$LAST..HEAD
+	git log --no-merges --format='%h %s%n%w(0,4,4)%b' $$LAST..HEAD \
+		| grep -v -e '^ *Co-Authored-By:' -e '^ *Claude-Session:'
 
 .PHONY: release
 release: ## Create new release based on conventional commits
