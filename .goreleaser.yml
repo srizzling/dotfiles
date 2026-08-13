@@ -1,4 +1,4 @@
-# GoReleaser configuration for .dotfiles.fish
+# GoReleaser configuration for srizzling/dotfiles
 version: 2
 
 # Since this is a dotfiles repository without Go code,
@@ -7,7 +7,7 @@ builds:
   - skip: true
 
 archives:
-  - format: tar.gz
+  - formats: [tar.gz]
     name_template: >-
       {{ .ProjectName }}_
       {{- title .Os }}_
@@ -42,6 +42,8 @@ changelog:
       - Merge remote-tracking branch
       - Merge branch
       - "^.*\\(wip\\).*$"
+      # The version-bump commit cog creates is noise in its own release notes
+      - "^chore\\(version\\):"
   groups:
     # Platform-specific changes
     - title: "nix"
@@ -110,29 +112,14 @@ changelog:
 release:
   prerelease: auto
   mode: replace
+  # Hand-written, user-facing summary of what changed. Sourced from
+  # RELEASE_NOTES.md, which the release workflow loads into the environment.
+  # Falls back to empty so a missing file can never fail the release.
   header: |
-    ## Nix-based macOS dotfiles configuration
-    
-    This release contains the complete Nix Darwin + Home Manager configuration for modern macOS development environments.
-    
-    ### Quick Start
-    
-    ```bash
-    # Download and extract
-    curl -L https://github.com/srizzling/.dotfiles.fish/archive/{{ .Tag }}.tar.gz | tar xz
-    cd .dotfiles.fish-{{ .Tag }}
-    
-    # Bootstrap (auto-detects architecture)
-    make bootstrap-personal  # or make bootstrap-work
-    ```
-    
-    ### What's included
-    - 🐟 Fish shell with plugins and theming
-    - ❄️ Nix package management with 50+ tools
-    - 🎨 Catppuccin Macchiato theme
-    - ✅ Comprehensive test suite
-    - 🔧 Multi-architecture support (Intel/Apple Silicon)
+    {{ envOrDefault "RELEASE_HIGHLIGHTS" "" }}
   footer: |
-    **Full documentation**: [README.md](https://github.com/srizzling/.dotfiles.fish/blob/{{ .Tag }}/README.md)
-    
-    **Development guidelines**: [CLAUDE.md](https://github.com/srizzling/.dotfiles.fish/blob/{{ .Tag }}/CLAUDE.md)
+    ---
+
+    **Setup and daily commands**: [README.md](https://github.com/srizzling/dotfiles/blob/{{ .Tag }}/README.md)
+
+    **Contributing guidelines**: [CLAUDE.md](https://github.com/srizzling/dotfiles/blob/{{ .Tag }}/CLAUDE.md)

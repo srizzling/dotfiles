@@ -23,6 +23,17 @@ jobs:
         with:
           go-version: stable
 
+      # RELEASE_NOTES.md holds the hand-written summary for this release.
+      # GoReleaser reads it via {{ envOrDefault "RELEASE_HIGHLIGHTS" "" }},
+      # so an absent file degrades to a changelog-only release rather than failing.
+      - name: Load release highlights
+        run: |
+          {
+            echo 'RELEASE_HIGHLIGHTS<<RELEASE_HIGHLIGHTS_EOF'
+            if [ -f RELEASE_NOTES.md ]; then cat RELEASE_NOTES.md; fi
+            echo 'RELEASE_HIGHLIGHTS_EOF'
+          } >> "$GITHUB_ENV"
+
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:

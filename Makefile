@@ -32,6 +32,7 @@ help:
 	@echo "  make test-fish-config         - Run Fish configuration tests"
 	@echo ""
 	@echo "Release commands:"
+	@echo "  make release-notes            - Show commits since last tag (to write RELEASE_NOTES.md)"
 	@echo "  make release                  - Create new release based on conventional commits"
 	@echo ""
 	@echo "Linux commands:"
@@ -154,12 +155,29 @@ test-fish-config: ## Run Fish configuration tests
 	@cd test && fish -i -c "fishtape fish-config.test.fish; exit"
 
 # Release commands
+.PHONY: release-notes
+release-notes: ## Show commits since the last tag (source material for RELEASE_NOTES.md)
+	@LAST=$$(git describe --tags --abbrev=0); \
+	echo "Commits since $$LAST:"; \
+	echo ""; \
+	git log --no-merges --format='%h %s%n%w(0,4,4)%b' $$LAST..HEAD
+
 .PHONY: release
 release: ## Create new release based on conventional commits
 	@echo "🚀 Creating new release based on conventional commits..."
 	@command -v cog >/dev/null 2>&1 || { echo "❌ Cocogitto (cog) not found. Run 'make switch' to install it."; exit 1; }
+	@# The release leads with RELEASE_NOTES.md, so shipping last release's copy is worse than shipping none.
+	@LAST=$$(git describe --tags --abbrev=0 2>/dev/null); \
+	if [ -z "$(SKIP_NOTES_CHECK)" ] && [ -n "$$LAST" ] && git diff --quiet $$LAST HEAD -- RELEASE_NOTES.md; then \
+		echo "❌ RELEASE_NOTES.md is unchanged since $$LAST — it still describes the last release."; \
+		echo "   Run 'make release-notes' to see what's new, rewrite RELEASE_NOTES.md, and commit it."; \
+		echo "   To release without a written summary: make release SKIP_NOTES_CHECK=1"; \
+		exit 1; \
+	fi
 	@echo "📝 Analyzing conventional commits since last tag..."
 	@cog bump --auto
+	@echo "⬆️  Pushing version commit..."
+	@git push origin HEAD
 	@echo "🏷️ Pushing tag to remote to trigger GitHub release..."
 	@git push origin $$(git describe --tags --abbrev=0)
 	@echo "✅ Release created and pushed! GitHub workflow will create the release automatically."
