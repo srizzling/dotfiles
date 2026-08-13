@@ -26,7 +26,7 @@ If you're migrating from the old Homebrew/symlink-based dotfiles:
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 
 # Clone and setup
-git clone https://github.com/srizzling/.dotfiles.fish.git ~/.dotfiles && cd ~/.dotfiles
+git clone https://github.com/srizzling/dotfiles.git ~/.dotfiles && cd ~/.dotfiles
 
 # Bootstrap (auto-detects architecture)
 make bootstrap-personal    # or make bootstrap-work
@@ -72,6 +72,20 @@ make release     # Create new release
 - **Flakes**: Pin dependencies for reproducible builds
 - **Multi-profile**: `personal` and `work` configurations (Apple Silicon only)
 - **Testing**: All packages tested with Fish-based test runners
+
+## Releasing
+
+Versions are derived from conventional commits; GitHub Actions publishes the release when the tag lands.
+
+```bash
+make release-notes   # Review what changed since the last tag
+                     # Rewrite RELEASE_NOTES.md to describe it, then commit
+make release         # Bump version, push the commit and the tag
+```
+
+A published release is `RELEASE_NOTES.md` followed by the auto-generated commit changelog grouped by scope — the written summary explains what the changes mean, the changelog records exactly what landed.
+
+`make release` refuses to run when `RELEASE_NOTES.md` hasn't changed since the last tag, so a release can't silently inherit the previous one's summary. Override with `make release SKIP_NOTES_CHECK=1` to publish with the changelog alone.
 
 ## Development
 
