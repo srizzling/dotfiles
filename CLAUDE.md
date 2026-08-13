@@ -165,11 +165,16 @@ auto-generated commit changelog.
 
 #### What bumps the version
 
-`feat` bumps minor; `fix`, `docs` and `refactor` bump patch; breaking changes
-bump major. Everything else (`chore`, `test`, `ci`, …) does not bump at all.
-The `docs`/`refactor` behaviour is configured in `cog.toml` and is not cog's
-default. If nothing in the range qualifies, `make release` fails rather than
-reporting a release it did not make — use `make release BUMP=patch` to force one.
+Breaking changes bump major and `feat` bumps minor. Every other type — `fix`,
+`docs`, `refactor`, `chore`, `test`, `ci`, `style`, `perf` — bumps patch. Only
+`wip` does not bump at all.
+
+Anything committed here reaches a machine on its next `switch`, so it earns a
+version; dependency updates are covered because `gdepup`/`gdepdown` record as
+`chore`. Everything beyond `feat`/`fix`/breaking is configured via
+`commit_types` in `cog.toml` and is not cog's default. If a range contains
+nothing but `wip`, `make release` fails rather than reporting a release it did
+not make — use `make release BUMP=patch` to force one.
 
 ### Adding New Packages
 

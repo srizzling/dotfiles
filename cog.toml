@@ -2,10 +2,27 @@ tag_prefix = "v"
 ignore_merge_commits = true
 disable_changelog = true
 
-# cog bumps only for feat/fix/breaking by default. In this repo documentation
-# and refactors are worth releasing on their own, so they bump the patch version.
+# cog bumps only for feat/fix/breaking by default. Everything committed here
+# lands on a machine when it next switches, so all the routine types bump the
+# patch version too — including dependency updates, which gdepup/gdepdown
+# record as chore. Only wip is left out: it should never cut a release.
 [commit_types.docs]
 bump_patch = true
 
 [commit_types.refactor]
+bump_patch = true
+
+[commit_types.chore]
+bump_patch = true
+
+[commit_types.test]
+bump_patch = true
+
+[commit_types.ci]
+bump_patch = true
+
+[commit_types.style]
+bump_patch = true
+
+[commit_types.perf]
 bump_patch = true

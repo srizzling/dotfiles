@@ -97,10 +97,12 @@ A published release is `RELEASE_NOTES.md` followed by the auto-generated commit 
 |---|---|
 | breaking change | major |
 | `feat` | minor |
-| `fix`, `docs`, `refactor` | patch |
-| everything else (`chore`, `test`, `ci`, …) | none |
+| `fix`, `docs`, `refactor`, `chore`, `test`, `ci`, `style`, `perf` | patch |
+| `wip` | none |
 
-`docs` and `refactor` bumping is a local choice, configured in `cog.toml` — cog bumps only for `feat`/`fix`/breaking by default. A range containing nothing bump-worthy fails rather than reporting a release it didn't make; force one with `make release BUMP=patch`.
+Everything except `wip` bumps: anything committed here reaches a machine on its next `switch`, so it's worth a version — including dependency updates, which `gdepup`/`gdepdown` record as `chore`. Only `feat` and breaking changes are cog defaults; the rest is configured in `cog.toml`.
+
+A range of nothing but `wip` commits fails rather than reporting a release it didn't make; force one with `make release BUMP=patch`.
 
 ## Development
 
