@@ -1,28 +1,44 @@
-# Nix-based macOS Dotfiles
+# Nix Dotfiles
 
-Modern, declarative macOS configuration using Nix Darwin + Home Manager with Fish shell, comprehensive package management, and beautiful Catppuccin theming.
+Modern, declarative configuration for macOS and Linux using Nix, with Fish shell, comprehensive package management, and Catppuccin theming throughout.
+
+| Platform | Managed by | Configuration |
+|---|---|---|
+| macOS (Apple Silicon) | nix-darwin + Home Manager | `darwinConfigurations.personal` / `.work` |
+| Linux (CachyOS + Hyprland) | standalone Home Manager | `homeConfigurations."srizzling@BlueShell"` |
+
+Shell, git, theming, and the common package set are shared. Window management diverges by platform: AeroSpace on macOS, Hyprland with Waybar on Linux.
 
 ## Quick Start
 
-### Bootstrap
 ```bash
 # Install Nix
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 
 # Clone and setup
 git clone https://github.com/srizzling/dotfiles.git ~/.dotfiles && cd ~/.dotfiles
+```
 
-# Bootstrap (auto-detects architecture)
+### macOS
+```bash
 make bootstrap-personal    # or make bootstrap-work
+```
+
+### Linux
+Home Manager owns the user environment; system packages come from pacman, which `bootstrap-linux` installs for you.
+
+```bash
+make bootstrap-linux
 ```
 
 ### Daily Commands
 ```bash
-make switch      # Apply configuration changes
-make update      # Update all packages  
-make rollback    # Rollback to previous generation
-make test        # Run all tests
-make release     # Create new release
+make switch        # Apply configuration changes (macOS)
+make switch-linux  # Apply configuration changes (Linux)
+make update        # Update flake inputs and apply (macOS)
+make rollback      # Rollback to previous generation (macOS)
+make test          # Run all tests
+make release       # Create new release
 ```
 
 ## Tools Included
@@ -41,20 +57,24 @@ make release     # Create new release
 
 ### Applications  
 - **Browser**: Firefox
-- **Productivity**: Raycast (Spotlight replacement)
+- **Productivity**: Raycast (Spotlight replacement, macOS)
+
+### Desktop
+- **macOS**: AeroSpace tiling window manager
+- **Linux**: Hyprland with Waybar, dunst, and fuzzel
 
 ### System
-- **Package Manager**: Nix (50+ tools) + brew-nix (GUI apps)
+- **Package Manager**: Nix (50+ tools), plus brew-nix for macOS GUI apps and pacman for Linux system packages
 - **Configuration**: Declarative Nix files + Home Manager
 - **Testing**: Comprehensive Fishtape test suite (51 tests)
-- **Architecture**: Apple Silicon only (personal/work profiles)
 
 ## Architecture
 
-- **Nix Darwin**: System-level macOS configuration
-- **Home Manager**: User-level package and dotfile management  
+- **Nix Darwin**: System-level macOS configuration (Apple Silicon)
+- **Home Manager**: User-level packages and dotfiles on both platforms — standalone on Linux, as a nix-darwin module on macOS
 - **Flakes**: Pin dependencies for reproducible builds
-- **Multi-profile**: `personal` and `work` configurations (Apple Silicon only)
+- **Multi-profile**: `personal` and `work` on macOS; `srizzling@BlueShell` on Linux
+- **Shared modules**: `packages-common.nix` and the shell/git/theme modules apply everywhere; `packages-darwin.nix` and `packages-linux.nix` hold the platform-specific sets
 - **Testing**: All packages tested with Fish-based test runners
 
 ## Releasing
