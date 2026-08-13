@@ -8,6 +8,22 @@
   # Disable nix-darwin's Nix management - Determinate Nix manages the daemon
   nix.enable = false;
 
+  # Because nix.enable is off, nix.settings does nothing and nix-darwin never
+  # writes /etc/nix/nix.conf. Determinate owns that file and rewrites it, but it
+  # `!include`s nix.custom.conf and reserves that for user configuration, so
+  # that is the one place a setting can live without being clobbered.
+  #
+  # trusted-users lets this user pass restricted settings (such as `system`) to
+  # the daemon. devenv needs it: declaring a flake input like agenix-shell fails
+  # with "ignoring the client-specified setting 'system'" otherwise. Note this
+  # is effectively root-equivalent — a trusted user can instruct the daemon to
+  # build and substitute arbitrary paths.
+  environment.etc."nix/nix.custom.conf".text = ''
+    # Managed by nix-darwin (darwin/default.nix). Determinate's installer wrote
+    # the original; this replaces it.
+    trusted-users = root srizzling
+  '';
+
   # Allow unfree, broken, and unsupported packages (needed for vscode, slack, raycast, spotify, ghostty, etc.)
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowBroken = true;
