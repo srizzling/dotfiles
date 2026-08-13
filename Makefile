@@ -6,6 +6,10 @@ PERSONAL_CONFIG = personal
 WORK_CONFIG = work
 LINUX_CONFIG = srizzling@BlueShell
 
+# Version bump strategy for `make release`: auto derives it from conventional
+# commits; override with BUMP=patch|minor|major to force one.
+BUMP ?= auto
+
 test-flake: ## Check Nix flake evaluation
 	@echo "🔍 Checking Nix flake..."
 	nix flake check --no-build
@@ -176,7 +180,19 @@ release: ## Create new release based on conventional commits
 		exit 1; \
 	fi
 	@echo "📝 Analyzing conventional commits since last tag..."
-	@cog bump --auto
+	@# cog only bumps for feat/fix/breaking. A chore- or docs-only range is a
+	@# no-op, and cog reports that on stdout while still exiting 0 — so compare
+	@# tags rather than trusting the exit code.
+	@BEFORE=$$(git describe --tags --abbrev=0 2>/dev/null); \
+	cog bump --$(BUMP) || exit 1; \
+	AFTER=$$(git describe --tags --abbrev=0 2>/dev/null); \
+	if [ "$$BEFORE" = "$$AFTER" ]; then \
+		echo ""; \
+		echo "❌ No release created — nothing since $$BEFORE warrants a version bump."; \
+		echo "   Only feat, fix and breaking changes bump; chore and docs do not."; \
+		echo "   To release this range anyway: make release BUMP=patch"; \
+		exit 1; \
+	fi
 	@echo "⬆️  Pushing version commit..."
 	@git push origin HEAD
 	@echo "🏷️ Pushing tag to remote to trigger GitHub release..."
