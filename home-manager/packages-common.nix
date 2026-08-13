@@ -30,6 +30,7 @@
     # Development tools
     gh  # GitHub CLI
     just  # Command runner
+    devenv  # Standard dev environment for projects under ~/development
     devbox  # Isolated development environments
     claude-code  # Agentic coding tool by Anthropic
     cocogitto  # Conventional commits toolbox

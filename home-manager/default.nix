@@ -83,5 +83,30 @@
     - These functions automatically format commits with proper emoji and structure
     - The functions are only available in Fish shell, not bash/zsh
     - Use single quotes around parameters to avoid shell interpolation issues
+
+    # Development Environments
+
+    Every project under `~/development/personal/` and `~/development/work/` uses
+    devenv for its development environment. This is a rule, not a preference.
+
+    ## What this means
+
+    - Define the environment in `devenv.nix`, with `devenv.yaml` for inputs.
+    - Activate it through direnv: an `.envrc` containing `use devenv`.
+    - Everything a project needs to build, test and run belongs in `devenv.nix`,
+      so a clean checkout plus `direnv allow` is enough to start working.
+
+    ## Do not introduce alternatives
+
+    Never set up a project with a bare `shell.nix`, a `devbox.json`, a language
+    version manager (asdf, nvm, pyenv, rbenv, rustup), a Homebrew install, or a
+    globally installed toolchain to satisfy a project dependency. If a tool is
+    needed to work on a project, it goes in that project's `devenv.nix`.
+
+    ## Existing projects
+
+    Some projects predate this rule and use a bare `flake.nix` devShell. Migrate
+    one to devenv when you are next reworking its environment, and never leave a
+    project configured with both at once.
   '';
 }
