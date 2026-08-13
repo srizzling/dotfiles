@@ -144,10 +144,32 @@ make test-quick    # Run tests without slow container checks
 
 ### Creating Releases
 
-1. Ensure all changes are committed and pushed
-2. Run `make release` to create a new version tag based on conventional commits
-3. The GitHub workflow will automatically create a release with changelogs
-4. Use `make changelog` to preview what will be included in the next release
+1. Ensure all changes are committed
+2. Run `make release-notes` to see the commits since the last tag
+3. Rewrite `RELEASE_NOTES.md` to describe those changes, and commit it
+4. Run `make release` to bump the version and push the commit and tag
+5. The GitHub workflow publishes the release automatically
+
+#### Writing RELEASE_NOTES.md
+
+This file becomes the top of the published release, directly above the
+auto-generated commit changelog.
+
+- **Write flowing prose, not bullet points.** The changelog below already lists
+  every change; the summary exists to explain what they mean, which a list of
+  fragments cannot do. Group related changes into paragraphs.
+- Describe the change from the reader's side — what was broken or missing, and
+  what is different now — rather than restating the commit subject.
+- Scope it to the commits in this release. Check the tag boundary with
+  `make release-notes`; do not rely on recent memory.
+
+#### What bumps the version
+
+`feat` bumps minor; `fix`, `docs` and `refactor` bump patch; breaking changes
+bump major. Everything else (`chore`, `test`, `ci`, …) does not bump at all.
+The `docs`/`refactor` behaviour is configured in `cog.toml` and is not cog's
+default. If nothing in the range qualifies, `make release` fails rather than
+reporting a release it did not make — use `make release BUMP=patch` to force one.
 
 ### Adding New Packages
 

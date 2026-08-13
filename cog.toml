@@ -1,3 +1,11 @@
 tag_prefix = "v"
 ignore_merge_commits = true
 disable_changelog = true
+
+# cog bumps only for feat/fix/breaking by default. In this repo documentation
+# and refactors are worth releasing on their own, so they bump the patch version.
+[commit_types.docs]
+bump_patch = true
+
+[commit_types.refactor]
+bump_patch = true

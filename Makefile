@@ -180,16 +180,16 @@ release: ## Create new release based on conventional commits
 		exit 1; \
 	fi
 	@echo "📝 Analyzing conventional commits since last tag..."
-	@# cog only bumps for feat/fix/breaking. A chore- or docs-only range is a
-	@# no-op, and cog reports that on stdout while still exiting 0 — so compare
-	@# tags rather than trusting the exit code.
+	@# A range with nothing bump-worthy (see cog.toml commit_types) is a no-op,
+	@# and cog reports that on stdout while still exiting 0 — so compare tags
+	@# rather than trusting the exit code.
 	@BEFORE=$$(git describe --tags --abbrev=0 2>/dev/null); \
 	cog bump --$(BUMP) || exit 1; \
 	AFTER=$$(git describe --tags --abbrev=0 2>/dev/null); \
 	if [ "$$BEFORE" = "$$AFTER" ]; then \
 		echo ""; \
 		echo "❌ No release created — nothing since $$BEFORE warrants a version bump."; \
-		echo "   Only feat, fix and breaking changes bump; chore and docs do not."; \
+		echo "   feat, fix, docs, refactor and breaking changes bump; chore does not."; \
 		echo "   To release this range anyway: make release BUMP=patch"; \
 		exit 1; \
 	fi

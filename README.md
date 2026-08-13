@@ -91,6 +91,17 @@ A published release is `RELEASE_NOTES.md` followed by the auto-generated commit 
 
 `make release` refuses to run when `RELEASE_NOTES.md` hasn't changed since the last tag, so a release can't silently inherit the previous one's summary. Override with `make release SKIP_NOTES_CHECK=1` to publish with the changelog alone.
 
+### What bumps the version
+
+| Commit type | Bump |
+|---|---|
+| breaking change | major |
+| `feat` | minor |
+| `fix`, `docs`, `refactor` | patch |
+| everything else (`chore`, `test`, `ci`, …) | none |
+
+`docs` and `refactor` bumping is a local choice, configured in `cog.toml` — cog bumps only for `feat`/`fix`/breaking by default. A range containing nothing bump-worthy fails rather than reporting a release it didn't make; force one with `make release BUMP=patch`.
+
 ## Development
 
 See [CLAUDE.md](./CLAUDE.md) for git-emoji commit conventions, release workflows, and development guidelines.
