@@ -53,6 +53,8 @@
     exec-once = awww-daemon
     exec-once = /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
     exec-once = hypridle
+    # LocalSend: start minimized to tray so the phone can always find this host
+    exec-once = localsend --hidden
     exec = awww img ~/wallpapers/wallpaper.png --transition-type grow --transition-pos center --transition-duration 1
 
 

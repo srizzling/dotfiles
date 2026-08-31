@@ -43,6 +43,7 @@ help:
 	@echo "  make bootstrap-linux          - Bootstrap Linux (CachyOS) configuration"
 	@echo "  make switch-linux             - Apply Linux home-manager configuration"
 	@echo "  make install-pacman-deps      - Install required pacman/AUR packages"
+	@echo "  make setup-firewall           - Open ufw ports for LocalSend/mDNS"
 	@echo ""
 	@echo "Installation commands:"
 	@echo "  make install-nix              - Install Nix with flakes support"
@@ -206,6 +207,7 @@ release: ## Create new release based on conventional commits
 bootstrap-linux: check-nix
 	@echo "Bootstrapping Linux (CachyOS) configuration..."
 	@$(MAKE) install-pacman-deps
+	@$(MAKE) setup-firewall
 	@nix run home-manager -- switch -b backup --flake .#$(LINUX_CONFIG)
 	@echo "Bootstrap complete! You may need to restart Hyprland for all changes to take effect."
 
@@ -221,10 +223,21 @@ install-pacman-deps:
 	@echo "Installing system packages via pacman..."
 	sudo pacman -S --needed ghostty ghostty-shell-integration hyprlock hypridle playerctl fuzzel awww yad dms-shell-hyprland matugen swaync nwg-dock-hyprland
 	@echo "Installing GUI apps via pacman..."
-	sudo pacman -S --needed vesktop freetube spotify-launcher
+	sudo pacman -S --needed vesktop freetube spotify-launcher localsend
 	@echo "Installing AUR packages via paru..."
 	paru -S --needed zapzap waybar-module-pacman-updates-git
 	@echo "All system packages installed."
+
+# Open firewall ports required by the Linux setup
+# ufw is system state (root-owned netfilter), so it cannot live in home-manager
+.PHONY: setup-firewall
+setup-firewall:
+	@echo "Opening firewall ports via ufw..."
+	sudo ufw allow 53317/tcp comment 'LocalSend transfer'
+	sudo ufw allow 53317/udp comment 'LocalSend discovery'
+	sudo ufw allow 5353/udp comment 'mDNS service discovery'
+	@echo "Firewall rules applied."
+	@sudo ufw status verbose
 
 # Setup Spotify Rose Pine theme via spicetify
 .PHONY: setup-spotify-theme
