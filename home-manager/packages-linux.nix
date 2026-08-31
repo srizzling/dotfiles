@@ -12,4 +12,5 @@
   # Firefox — install only, let Firefox manage its own profiles
   # Using programs.firefox with profiles breaks existing Firefox profile loading
   programs.firefox.enable = true;
+  programs.firefox.configPath = "${config.xdg.configHome}/mozilla/firefox";
 }

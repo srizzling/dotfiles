@@ -2,101 +2,8 @@
 
 {
   # Hyprland window manager configuration
-  # Mirrors aerospace keybindings and workspace layout
-  # Hyprlock — GPU-accelerated lock screen, Rose Pine themed
-  xdg.configFile."hypr/hyprlock.conf".text = ''
-    general {
-        hide_cursor = true
-        grace = 3
-    }
-
-    background {
-        monitor =
-        path = screenshot
-        blur_passes = 4
-        blur_size = 8
-        noise = 0.02
-        contrast = 0.8
-        brightness = 0.6
-        vibrancy = 0.2
-        color = rgba(191724ff)
-    }
-
-    input-field {
-        monitor =
-        size = 300, 50
-        outline_thickness = 2
-        dots_size = 0.25
-        dots_spacing = 0.15
-        dots_center = true
-        outer_color = rgba(c4a7e7ff)
-        inner_color = rgba(26233aff)
-        font_color = rgba(e0def4ff)
-        fade_on_empty = true
-        fade_timeout = 2000
-        placeholder_text = <span foreground="##908caa">...</span>
-        fail_color = rgba(eb6f92ff)
-        fail_text = <span foreground="##eb6f92">$FAIL</span>
-        fail_transition = 300
-        capslock_color = rgba(f6c177ff)
-        position = 0, -80
-        halign = center
-        valign = center
-        rounding = 12
-    }
-
-    label {
-        monitor =
-        text = $TIME
-        color = rgba(e0def4ff)
-        font_size = 90
-        font_family = Iosevka NFM
-        position = 0, 80
-        halign = center
-        valign = center
-    }
-
-    label {
-        monitor =
-        text = Hi, $USER
-        color = rgba(ebbcbaff)
-        font_size = 18
-        font_family = Iosevka NFM
-        position = 0, 20
-        halign = center
-        valign = center
-    }
-  '';
-
-  # Hypridle — idle daemon, dims then locks then sleeps
-  xdg.configFile."hypr/hypridle.conf".text = ''
-    general {
-        lock_cmd = pidof hyprlock || hyprlock
-        before_sleep_cmd = loginctl lock-session
-        after_sleep_cmd = hyprctl dispatch dpms on
-    }
-
-    # Dim screen after 5 minutes
-    listener {
-        timeout = 300
-        on-timeout = brightnessctl -s set 30
-        on-resume = brightnessctl -r
-    }
-
-    # Lock after 10 minutes
-    listener {
-        timeout = 600
-        on-timeout = loginctl lock-session
-    }
-
-    # Turn off displays after 15 minutes
-    listener {
-        timeout = 900
-        on-timeout = hyprctl dispatch dpms off
-        on-resume = hyprctl dispatch dpms on
-    }
-  '';
-
+  # Mirrors aerospace keybindings and workspace layout.
+  # Lockscreen + idle management handled by hyprlock/hypridle (see hyprlock.nix).
   xdg.configFile."hypr/hyprland.conf".text = ''
     ################
     ### MONITORS ###
@@ -117,7 +24,7 @@
     ###################
 
     $terminal = ghostty
-    $menu = fuzzel
+    $menu = qs -c noctalia-shell ipc call launcher toggle
     $mainMod = SUPER
 
 
@@ -131,19 +38,21 @@
     env = XDG_CURRENT_DESKTOP,Hyprland
     env = XDG_SESSION_TYPE,wayland
     env = XDG_SESSION_DESKTOP,Hyprland
-    env = GDK_DPI_SCALE,1
+
+    # HiDPI / font clarity — let XWayland render at native res
+    env = GDK_DPI_SCALE,1.5
+    env = QT_AUTO_SCREEN_SCALE_FACTOR,1
+    env = QT_QPA_PLATFORM,wayland;xcb
 
 
     #################
     ### AUTOSTART ###
     #################
 
-    exec-once = waybar
-    exec-once = swaync
-    exec-once = hypridle
+    exec-once = qs -c noctalia-shell
     exec-once = awww-daemon
     exec-once = /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-    exec-once = nwg-dock-hyprland -d -hd 20 -l overlay -hl overlay -mb 6 -ml 8 -mr 8 -i 36 -nolauncher
+    exec-once = hypridle
     exec = awww img ~/wallpapers/wallpaper.png --transition-type grow --transition-pos center --transition-duration 1
 
 
@@ -177,8 +86,8 @@
 
         blur {
             enabled = true
-            size = 8
-            passes = 4
+            size = 6
+            passes = 2
             new_optimizations = true
             vibrancy = 0.4
             vibrancy_darkness = 0.6
@@ -226,15 +135,18 @@
     }
 
     dwindle {
-        pseudotile = true
         preserve_split = true
     }
 
     misc {
-        vrr = 0
+        vrr = 1
         force_default_wallpaper = 0
         disable_hyprland_logo = true
         mouse_move_focuses_monitor = true
+    }
+
+    xwayland {
+        force_zero_scaling = true
     }
 
     render {
@@ -259,11 +171,11 @@
 
     # ── Launch ──
     bind = $mainMod, Return, exec, $terminal
-    bind = $mainMod, space, exec, fuzzel
+    bind = $mainMod, space, exec, qs -c noctalia-shell ipc call launcher toggle
     bind = $mainMod, Q, killactive,
     bind = $mainMod SHIFT, Q, exit,
     bind = $mainMod, F, fullscreen, 0
-    bind = $mainMod SHIFT, X, exec, hyprlock
+    bind = $mainMod SHIFT, X, exec, loginctl lock-session
     bind = $mainMod SHIFT, Return, exec, firefox
 
     # ── Focus (vim-style, matching aerospace alt-h/j/k/l) ──
@@ -368,17 +280,17 @@
 
     # Secondary monitor (XB270HU = DP-2 = LEFT)
     workspace = name:1, monitor:DP-2, default:true
-    workspace = name:S, monitor:DP-2
-    workspace = name:M, monitor:DP-2
-    workspace = name:E, monitor:DP-2
-    workspace = name:N, monitor:DP-2
+    workspace = name:S, monitor:DP-2, persistent:true
+    workspace = name:M, monitor:DP-2, persistent:true
+    workspace = name:E, monitor:DP-2, persistent:true
+    workspace = name:N, monitor:DP-2, persistent:true
 
     # Primary monitor (MPG 274U = DP-1 = RIGHT)
     workspace = name:2, monitor:DP-1, default:true
-    workspace = name:B, monitor:DP-1
-    workspace = name:C, monitor:DP-1
-    workspace = name:T, monitor:DP-1
-    workspace = name:G, monitor:DP-1
+    workspace = name:B, monitor:DP-1, persistent:true
+    workspace = name:C, monitor:DP-1, persistent:true
+    workspace = name:T, monitor:DP-1, persistent:true
+    workspace = name:G, monitor:DP-1, persistent:true
 
 
     ##########################
@@ -433,6 +345,7 @@
         match:class = ^(steam)$
         workspace = name:G
         float = true
+        center = true
     }
 
     windowrule {

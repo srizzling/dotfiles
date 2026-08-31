@@ -9,9 +9,8 @@
     ./lsd.nix
     ./catppuccin.nix
     ./hyprland.nix
-    ./waybar.nix
-    ./fuzzel.nix
-    ./swaync.nix
+    ./hyprlock.nix
+    ./noctalia.nix
     ../profiles/gaming.nix
   ];
 
@@ -114,62 +113,6 @@
     }
   '';
 
-  # nwg-dock-hyprland — Rose Pine themed dock
-  xdg.configFile."nwg-dock-hyprland/style.css".text = ''
-    window {
-        background: rgba(25, 23, 36, 0.0);
-    }
-
-    #box-outer {
-        background: rgba(25, 23, 36, 0.9);
-        border: 1px solid rgba(38, 35, 58, 0.5);
-        border-radius: 12px;
-        padding: 4px 8px;
-        margin: 0;
-    }
-
-    button, image {
-        background: none;
-        border: none;
-        border-radius: 8px;
-        padding: 4px;
-        margin: 2px;
-        transition: 200ms;
-    }
-
-    button:hover {
-        background: rgba(38, 35, 58, 0.6);
-    }
-
-    button:focus {
-        box-shadow: none;
-    }
-
-    /* ── context menu (multi-window picker) ── */
-    menu, menuitem {
-        background-color: #1f1d2e;
-        color: #e0def4;
-        border: none;
-        border-radius: 0;
-    }
-
-    menu {
-        border: 1px solid #26233a;
-        border-radius: 8px;
-        padding: 4px;
-    }
-
-    menuitem {
-        padding: 6px 12px;
-        border-radius: 6px;
-    }
-
-    menuitem:hover {
-        background-color: #26233a;
-        color: #e0def4;
-    }
-  '';
-
   # Vesktop/Vencord — Rose Pine theme CSS
   # Using home.file to write into vesktop's existing themes directory
   home.file.".config/vesktop/themes/rose-pine.css".text = ''
@@ -241,6 +184,35 @@
     }
   '';
 
+
+  # WirePlumber — set default audio devices
+  # DX3 Pro as default output, HyperX QuadCast as default mic
+  xdg.configFile."wireplumber/wireplumber.conf.d/50-default-devices.conf".text = ''
+    monitor.alsa.rules = [
+      {
+        matches = [
+          { node.name = "alsa_output.usb-Topping_DX3_Pro-00.HiFi__Headphones__sink" }
+        ]
+        actions = {
+          update-props = {
+            priority.session = 2000
+            priority.driver  = 2000
+          }
+        }
+      }
+      {
+        matches = [
+          { node.name = "alsa_input.usb-Kingston_HyperX_Quadcast_4114-00.analog-stereo" }
+        ]
+        actions = {
+          update-props = {
+            priority.session = 2000
+            priority.driver  = 2000
+          }
+        }
+      }
+    ]
+  '';
 
   # Claude development instructions
   home.file."CLAUDE.md".text = ''

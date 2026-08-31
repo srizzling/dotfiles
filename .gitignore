@@ -32,3 +32,9 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Local Claude Code session state
+.claude/
+
+# Scratch screenshots
+screenshot.png

@@ -16,9 +16,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin.url = "github:catppuccin/nix";
+    steam-config-nix = {
+      url = "github:different-name/steam-config-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nix-darwin, home-manager, brew-nix, catppuccin, ... }:
+  outputs = { self, nixpkgs, nix-darwin, home-manager, brew-nix, catppuccin, steam-config-nix, ... }:
   let
     system = "aarch64-darwin";
 
