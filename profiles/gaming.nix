@@ -65,9 +65,9 @@
 
 
   # Create gaming directories
+  # ~/wallpapers is created by the home.file entry in hyprland.nix.
   home.activation.createGamingDirs = config.lib.dag.entryAfter ["writeBoundary"] ''
     mkdir -p ~/Games
-    mkdir -p ~/wallpapers
   '';
 
   # System-level performance tuning script (requires sudo)

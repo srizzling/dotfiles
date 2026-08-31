@@ -1,6 +1,11 @@
 { config, pkgs, lib, ... }:
 
 {
+  # The desktop wallpaper, tracked in-repo so a fresh machine comes up riced
+  # instead of staring at noctalia's bundled default. Both the noctalia IPC
+  # call below and hyprlock.nix read it from this path.
+  home.file."wallpapers/wallpaper.png".source = ../wallpapers/wallpaper.png;
+
   # Hyprland window manager configuration
   # Mirrors aerospace keybindings and workspace layout.
   # Lockscreen + idle management handled by hyprlock/hypridle (see hyprlock.nix).
@@ -50,12 +55,17 @@
     #################
 
     exec-once = qs -c noctalia-shell
-    exec-once = awww-daemon
     exec-once = /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
     exec-once = hypridle
     # LocalSend: start minimized to tray so the phone can always find this host
     exec-once = localsend --hidden
-    exec = awww img ~/wallpapers/wallpaper.png --transition-type grow --transition-pos center --transition-duration 1
+    # Wallpaper. Noctalia's wallpaper layer sits above anything awww paints, so
+    # the background is set through noctalia's IPC rather than `awww img` --
+    # awww-daemon ran for months painting a layer nothing could see. Noctalia
+    # remembers the choice in ~/.cache/noctalia/wallpapers.json, so this only
+    # really does work on a fresh machine; it retries because the shell needs a
+    # moment to come up before it answers IPC.
+    exec-once = bash -c 'for i in $(seq 1 30); do qs -c noctalia-shell ipc call wallpaper set "$HOME/wallpapers/wallpaper.png" DP-1 && qs -c noctalia-shell ipc call wallpaper set "$HOME/wallpapers/wallpaper.png" DP-2 && break; sleep 1; done'
 
 
     #####################

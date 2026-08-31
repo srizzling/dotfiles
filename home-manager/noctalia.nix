@@ -82,6 +82,20 @@ let
       sleepOnTimeout = false;
     };
 
+    # Noctalia draws its own opaque wallpaper layer in the background layer,
+    # stacked above anything awww paints — so it, not awww, owns the desktop
+    # background. Point it at the in-repo wallpapers directory (see the
+    # home.file entry in hyprland.nix) rather than its default ~/Pictures.
+    wallpaper = {
+      enabled = true;
+      directory = "${config.home.homeDirectory}/wallpapers";
+      # The tracked wallpaper is 1672x941 — smaller than either monitor, so
+      # crop-to-fill rather than letterbox against the fill colour.
+      fillMode = "crop";
+      setWallpaperOnAllMonitors = true;
+      automationEnabled = false;
+    };
+
     # Lock screen is owned by hyprlock/hypridle (see hyprlock.nix), which has a
     # real layout surface. Disabled here so only one locker answers logind.
     lockScreen = {
