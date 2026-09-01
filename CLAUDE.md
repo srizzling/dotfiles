@@ -158,6 +158,10 @@ auto-generated commit changelog.
 - **Write flowing prose, not bullet points.** The changelog below already lists
   every change; the summary exists to explain what they mean, which a list of
   fragments cannot do. Group related changes into paragraphs.
+- **Keep it a summary — headline first, a paragraph or two total.** Open with
+  what the release brings ("This release brings Linux support for the gaming
+  PC…"), then a sentence or two per theme. Implementation detail — root-cause
+  narratives, caveats, tool internals — belongs in commit bodies, not here.
 - Describe the change from the reader's side — what was broken or missing, and
   what is different now — rather than restating the commit subject.
 - Scope it to the commits in this release. Check the tag boundary with
