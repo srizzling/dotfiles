@@ -86,8 +86,9 @@
 
     # Development Environments
 
-    Every project under `~/development/personal/` and `~/development/work/` uses
-    devenv for its development environment. This is a rule, not a preference.
+    Every project you control under `~/development/personal/` and
+    `~/development/work/` uses devenv for its development environment. This is
+    a rule, not a preference.
 
     ## What this means
 
@@ -107,11 +108,30 @@
     - Everything a project needs to build, test and run belongs in `devenv.nix`,
       so a clean checkout plus `direnv allow` is enough to start working.
 
+    ## Repositories you do not control
+
+    Clones of upstream projects you contribute to but do not maintain live in
+    `~/development/opensource/`, and the devenv rule does not apply there.
+
+    - Use whatever build and environment tooling the project already ships.
+    - Never add `devenv.nix`, `devenv.yaml`, `.envrc` or any other local
+      convention to a repository whose maintainers did not ask for it. Keeping
+      your setup out of someone else's diff matters more than your own
+      convenience.
+    - If such a project needs a tool you do not have, reach for
+      `nix shell nixpkgs#<tool>` for a one-off, or keep a devenv in a separate
+      scratch directory. Do not install it globally.
+
+    What decides the location is control, not licence. A repository you own and
+    maintain belongs under `personal/` and follows the devenv rule even when it
+    is public.
+
     ## Setting up a project
 
     Run `devinit` in the project directory. It scaffolds `devenv.nix`,
     `devenv.yaml` and `.envrc`, then runs `direnv allow`. It refuses to run
-    outside the two directories above, refuses to overwrite an existing
+    outside `personal/` and `work/` — including in `opensource/`, where
+    scaffolding these files would be wrong — refuses to overwrite an existing
     `devenv.nix`, and warns when a competing environment file is still present.
 
     ## Do not introduce alternatives
