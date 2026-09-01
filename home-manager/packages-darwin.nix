@@ -6,7 +6,6 @@
     # macOS GUI Applications (official packages from nixpkgs)
     raycast
     aerospace
-    discord
     vscode
     slack
     spotify
