@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   # Git configuration
@@ -42,6 +42,15 @@
         file-style = "#c4a7e7";
         file-decoration-style = "#c4a7e7 ul";
       };
+
+      # Nix's git-credential-osxkeychain is only ad-hoc signed, so the
+      # keychain's "Always Allow" is pinned to one build and every git update
+      # prompts again. Apple's signed helper keeps a stable identity. The empty
+      # entry clears the `osxkeychain` helper from Nix git's system gitconfig.
+      credential.helper = lib.mkIf pkgs.stdenv.isDarwin [
+        ""
+        "/Library/Developer/CommandLineTools/usr/libexec/git-core/git-credential-osxkeychain"
+      ];
 
       merge.conflictstyle = "diff3";
       diff.colorMoved = "default";
