@@ -11,9 +11,16 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # brew-nix only bumps its brew-api pin occasionally, so casks lag weeks
+    # behind Homebrew. Track the daily cask snapshot directly instead.
+    brew-api = {
+      url = "github:BatteredBunny/brew-api";
+      flake = false;
+    };
     brew-nix = {
       url = "github:BatteredBunny/brew-nix";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.brew-api.follows = "brew-api";
     };
     catppuccin.url = "github:catppuccin/nix";
     steam-config-nix = {
