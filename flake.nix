@@ -50,6 +50,8 @@
             brewCasks.ghostty
             # OrbStack for container management
             brewCasks.orbstack
+            # T3 Code GUI for coding agents - not in nixpkgs
+            brewCasks.t3-code
           ];
         })
         # Re-enable home-manager with explicit Darwin configuration  

@@ -45,3 +45,4 @@
 @test "firefox app is installed" (test -d "/Applications/Nix Apps/Firefox.app" -o -d "/Applications/Firefox.app")
 @test "cocogitto is available and working" (cog --version | string match -q "cog*")
 @test "chdman is available and working" (chdman | string match -q "*MAME Compressed Hunks of Data*")
+@test "T3 Code app is installed" (test -d "/Applications/Nix Apps/T3 Code (Alpha).app")
